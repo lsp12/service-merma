@@ -31,7 +31,12 @@ export class MermaService {
       });
 
     const totalPesoCaja = pesoCaja.reduce((a, b) => a + b, 0);
-    const totalPesoRCaja = pesoCajaR.reduce((a, b) => a + b, 0);
+    const totalPesoRCaja = pesoCajaR ? pesoCajaR.reduce((a, b) => a + b, 0) : 0;
+    console.log(
+      totalPesoCaja,
+      createMermaDto.rCortado,
+      createMermaDto.rProcesado,
+    );
 
     const pesoProcesado = createMermaDto.rProcesado - totalPesoCaja;
     const pesoRechazado =
@@ -45,13 +50,17 @@ export class MermaService {
     const rAprobechado = createMermaDto.rCortado - pesoRechazado;
 
     const porcentajeRAprobechado =
-      (rAprobechado - totalPesoRCaja) / rAprobechado;
+      ((totalPesoCaja - rAprobechado) * 100) / rAprobechado;
 
     console.log(
       porcentajeRAprobechado,
+      (rAprobechado * porcentajeRAprobechado) / 100 / pesoFruta,
+      totalPesoRCaja / pesoFruta,
       (rAprobechado * porcentajeRAprobechado) / 100,
-      totalPesoRCaja / pesoFruta,
-      totalPesoRCaja / pesoFruta,
+      totalPesoCaja,
+      rAprobechado,
+      rAprobechado - totalPesoRCaja,
+      totalPesoRCaja,
     );
 
     const ratio =
@@ -77,6 +86,9 @@ export class MermaService {
       ratio,
       RacimoAprovechado: rAprobechado / pesoFruta,
       porcentajeRAprobechado,
+      pesoCajaRacimoRechazado: totalPesoRCaja / pesoFruta,
+      racimosMerma: (rAprobechado * porcentajeRAprobechado) / 100 / pesoFruta,
+      menssaage: 'Merma creada con exito',
     };
   }
 
