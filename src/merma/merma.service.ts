@@ -25,35 +25,44 @@ export class MermaService {
     });
 
     const pesoCajaR =
-      cajaR?.length < 0 &&
+      cajaR?.length > 0 &&
       cajaR.map((caja) => {
         return caja.peso * caja.cantidad;
       });
 
-    const pesoProcesado =
-      createMermaDto.rProcesado - pesoCaja.reduce((a, b) => a + b, 0);
+    const totalPesoCaja = pesoCaja.reduce((a, b) => a + b, 0);
+    const totalPesoRCaja = pesoCajaR.reduce((a, b) => a + b, 0);
+
+    const pesoProcesado = createMermaDto.rProcesado - totalPesoCaja;
     const pesoRechazado =
-      pesoProcesado +
-      (pesoCajaR ? pesoCajaR.reduce((a, b) => a + b, 0) : 0) +
-      rRechazado;
+      pesoProcesado + (pesoCajaR ? totalPesoRCaja : 0) + rRechazado;
 
     const porcentajeRechazado =
       (pesoProcesado / createMermaDto.rProcesado) * 100;
     const procentajeCRechazado =
       (pesoRechazado / createMermaDto.rCortado) * 100;
 
+    const rAprobechado = createMermaDto.rCortado - pesoRechazado;
+
+    const porcentajeRAprobechado =
+      (rAprobechado - totalPesoRCaja) / rAprobechado;
+
+    console.log(
+      porcentajeRAprobechado,
+      (rAprobechado * porcentajeRAprobechado) / 100,
+      totalPesoRCaja / pesoFruta,
+      totalPesoRCaja / pesoFruta,
+    );
+
     const ratio =
-      ((rProcesado - pesoProcesado / pesoFruta) /
-        (pesoCaja.reduce((a, b) => a + b, 0) / 42)) *
-      100;
+      ((rProcesado - pesoProcesado / pesoFruta) / (totalPesoCaja / 42)) * 100;
 
     const merma = this.MermaRepository.create({
       ...createMermaDto,
-      totalCajas: pesoCaja.reduce((a, b) => a + b, 0) / 42,
+      totalCajas: totalPesoCaja / 42,
       mermaCortada: pesoRechazado / pesoFruta,
       mermaProcesada: pesoProcesado / pesoFruta,
     });
-    console.log(merma);
 
     return {
       rCortado: createMermaDto.rCortado,
@@ -66,6 +75,8 @@ export class MermaService {
       porcentajeRechazado,
       procentajeCRechazado,
       ratio,
+      RacimoAprovechado: rAprobechado / pesoFruta,
+      porcentajeRAprobechado,
     };
   }
 
