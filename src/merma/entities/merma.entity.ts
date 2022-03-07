@@ -1,3 +1,4 @@
+import { Sku } from 'src/sku/entities/sku.entity';
 import {
   Column,
   CreateDateColumn,
@@ -66,12 +67,25 @@ export class Merma {
   @Column()
   totalCajas: number;
 
+  @Column()
+  numManosVotadasP: number;
+
+  @Column()
+  numManosVotadasU: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
   @OneToMany((type) => Cajas, (cajas) => cajas.merma)
   cajas: Cajas[];
 
   @ManyToOne((type) => Ranch, (Ranch) => Ranch.merma)
   Ranch: number | Ranch;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @ManyToOne((type) => Sku, (Sku) => Sku.merma, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  sku: number | Sku;
 }

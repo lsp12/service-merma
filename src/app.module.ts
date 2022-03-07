@@ -4,6 +4,7 @@ import { getConnectionOptions } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MermaModule } from './merma/merma.module';
+import { SkuModule } from './sku/sku.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { MermaModule } from './merma/merma.module';
           autoLoadEntities: true,
         }),
     }),
+    SkuModule,
   ],
   controllers: [AppController],
   providers: [AppService],

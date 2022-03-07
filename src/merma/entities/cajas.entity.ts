@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -20,6 +21,12 @@ export class Cajas {
 
   @Column()
   cantidad: number;
+
+  @Column()
+  estado: boolean;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @ManyToOne((type) => Merma, (merma) => merma.cajas, {
     cascade: true,

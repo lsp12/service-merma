@@ -46,7 +46,11 @@ export class CreateMermaDto {
 
   @IsNumber()
   @IsOptional()
-  numManosVotadas: number;
+  numManosVotadasP: number;
+
+  @IsNumber()
+  @IsOptional()
+  numManosVotadasU: number;
 }
 
 export interface ICajas {
