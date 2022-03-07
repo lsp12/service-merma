@@ -9,6 +9,7 @@ export class CreateMermaDto {
 
   cajas: ICajas[];
 
+  @IsOptional()
   cajaR: ICajas[];
 
   @IsNumber()
@@ -42,6 +43,10 @@ export class CreateMermaDto {
   @IsNumber()
   @IsOptional()
   lDedoUltima: number;
+
+  @IsNumber()
+  @IsOptional()
+  numManosVotadas: number;
 }
 
 export interface ICajas {

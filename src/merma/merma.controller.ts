@@ -17,6 +17,7 @@ export class MermaController {
 
   @Post()
   create(@Body() createMermaDto: CreateMermaDto) {
+    console.log(createMermaDto);
     return this.mermaService.create(createMermaDto);
   }
 
