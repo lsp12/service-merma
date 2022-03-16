@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Merma } from './merma.entity';
 
-@Entity()
+@Entity({ synchronize: true })
 export class Cajas {
   @PrimaryGeneratedColumn()
   id: number;

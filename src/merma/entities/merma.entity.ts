@@ -11,7 +11,7 @@ import {
 import { Cajas } from './cajas.entity';
 import { Ranch } from './ranch.entity';
 
-@Entity()
+@Entity({ synchronize: false })
 export class Merma {
   @PrimaryGeneratedColumn()
   id: number;

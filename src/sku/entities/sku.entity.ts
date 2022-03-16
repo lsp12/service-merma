@@ -18,6 +18,36 @@ export class Sku {
   @Column()
   peso: number;
 
+  @Column()
+  clusters: number;
+
+  @Column()
+  dedosMin: number;
+
+  @Column()
+  dedosMax: number;
+
+  @Column()
+  pesoFrutaFundaMin: number;
+
+  @Column()
+  pesoFrutaFundaMax: number;
+
+  @Column()
+  calibracionMin: number;
+
+  @Column()
+  calibracionMax: number;
+
+  @Column()
+  largoDedoMin: number;
+
+  @Column()
+  largoDedoMax: number;
+
+  @Column()
+  empresa: string;
+
   @OneToMany((type) => Merma, (Merma) => Merma.sku)
   merma: Merma[];
 }
