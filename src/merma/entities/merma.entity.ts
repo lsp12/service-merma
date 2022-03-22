@@ -1,3 +1,5 @@
+import { Caja } from 'src/cajas/entities/caja.entity';
+import { PerfilRacimo } from 'src/perfil-racimos/entities/perfil-racimo.entity';
 import { Sku } from 'src/sku/entities/sku.entity';
 import {
   Column,
@@ -7,85 +9,91 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
-import { Cajas } from './cajas.entity';
 import { Ranch } from './ranch.entity';
 
-@Entity({ synchronize: false })
+@Entity({ synchronize: true })
 export class Merma {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   rCortado: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   rProcesado: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   rRechazados: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   pesoFruta: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   pesoRacimo: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   pesoTallo: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   edad: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   calibracion: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   nManos: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   pesoSegundaMano: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   pesoUltimaMano: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   lDedoSegunda: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   lDedoUltima: number;
 
-  @Column()
-  ratio: number;
+  @Column({ type: 'double precision' })
+  ratioC: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
+  ratioP: number;
+
+  @Column({ type: 'double precision' })
   mermaProcesada: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   mermaCortada: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   totalCajas: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   numManosVotadasP: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   numManosVotadasU: number;
 
-  @CreateDateColumn()
+  @Column({ type: 'double precision' })
+  pesoCaja: number;
+
+  @Column({ type: 'date', nullable: true })
+  fecha: Date;
+
+  @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @OneToMany((type) => Cajas, (cajas) => cajas.merma)
-  cajas: Cajas[];
+  @Column({ default: false })
+  perfil: boolean;
 
-  @ManyToOne((type) => Ranch, (Ranch) => Ranch.merma)
-  Ranch: number | Ranch;
+  @OneToMany(() => Caja, (Caja) => Caja.merma)
+  cajas: Caja[];
 
-  @ManyToOne((type) => Sku, (Sku) => Sku.merma, {
-    cascade: true,
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  sku: number | Sku;
+  @OneToMany(() => PerfilRacimo, (PerfilRacimo) => PerfilRacimo.merma)
+  perfilRacimos: PerfilRacimo[];
+
+  @ManyToOne(() => Ranch, (Ranch) => Ranch.merma)
+  ranch: number | Ranch;
 }

@@ -10,6 +10,7 @@ import {
 import { MermaService } from './merma.service';
 import { CreateMermaDto } from './dto/create-merma.dto';
 import { UpdateMermaDto } from './dto/update-merma.dto';
+import { IFindMerma } from './Interface/InterfaceMerma';
 
 @Controller('merma')
 export class MermaController {
@@ -21,14 +22,14 @@ export class MermaController {
     return this.mermaService.create(createMermaDto);
   }
 
+  @Post('/findMerma')
+  findOne(@Body() findMermaDto: IFindMerma) {
+    return this.mermaService.findOne(findMermaDto);
+  }
+
   @Get()
   findAll() {
     return this.mermaService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.mermaService.findOne(+id);
   }
 
   @Patch(':id')

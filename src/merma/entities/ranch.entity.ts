@@ -23,6 +23,6 @@ export class Ranch {
   @ManyToOne(() => Zona, (Zona) => Zona.ranch)
   zona: number;
 
-  @OneToMany(() => Merma, (Merma) => Merma.Ranch)
+  @OneToMany(() => Merma, (Merma) => Merma.ranch)
   merma: Merma[];
 }

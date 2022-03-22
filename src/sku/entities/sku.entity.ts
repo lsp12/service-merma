@@ -1,11 +1,6 @@
+import { Caja } from 'src/cajas/entities/caja.entity';
 import { Merma } from 'src/merma/entities/merma.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Sku {
@@ -15,39 +10,39 @@ export class Sku {
   @Column()
   marca: string;
 
-  @Column()
+  @Column({ type: 'double precision' })
   peso: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   clusters: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   dedosMin: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   dedosMax: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   pesoFrutaFundaMin: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   pesoFrutaFundaMax: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   calibracionMin: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   calibracionMax: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   largoDedoMin: number;
 
-  @Column()
+  @Column({ type: 'double precision' })
   largoDedoMax: number;
 
   @Column()
   empresa: string;
 
-  @OneToMany((type) => Merma, (Merma) => Merma.sku)
-  merma: Merma[];
+  @OneToMany((type) => Caja, (Caja) => Caja.sku)
+  cajas: Caja[];
 }

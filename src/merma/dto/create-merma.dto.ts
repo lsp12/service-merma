@@ -1,4 +1,5 @@
 import { IsNumber, IsOptional } from 'class-validator';
+import { Sku } from 'src/sku/entities/sku.entity';
 
 export class CreateMermaDto {
   @IsNumber()
@@ -10,6 +11,7 @@ export class CreateMermaDto {
   @IsNumber()
   rProcesado: number;
 
+  @IsOptional()
   cajas: ICajas[];
 
   @IsOptional()
@@ -54,10 +56,20 @@ export class CreateMermaDto {
   @IsNumber()
   @IsOptional()
   numManosVotadasU: number;
+
+  @IsOptional()
+  skuCajas: ISkuCajas[];
+
+  @IsOptional()
+  fecha: string;
 }
 
 export interface ICajas {
-  marca: string;
-  peso: number;
   cantidad: number;
+}
+
+export interface ISkuCajas {
+  sku: Sku;
+  caja: ICajas;
+  cajaR: ICajas;
 }
