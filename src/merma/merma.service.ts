@@ -222,19 +222,63 @@ export class MermaService {
 
       const pesoMermaEv = defectosMerma.reduce((a, b) => a + b.pesoRacimo, 0);
 
-      const defectosMerma2 = defectosMerma.map((defecto) => {
+      const aux = {};
+
+      const defectosMerma2 = defectosMerma.map((defecto, index) => {
+        const porcentajeMM = (defecto.pesoRacimo / pesoMermaEv) * 100;
+        aux[index] = {
+          porcentajeMM,
+          defecto: defecto.defecto,
+        };
         return {
           ...defecto,
-          porcentajeMM: (defecto.pesoRacimo / pesoMermaEv) * 100,
+          porcentajeMM,
         };
       });
 
+      const porcentajeRacimoRechazado = rRechazados / mermaCortada;
+      const mermaSinRacimos = mermaCortada - rRechazados;
+
+      const defectosMermaGeneral = Object.values<any>(aux).map((defecto) => {
+        const pesoRechazado = (mermaSinRacimos / 100) * defecto.porcentajeMM;
+        const porcentaje = pesoRechazado / mermaCortada;
+        const racimos = pesoRechazado / pesoFruta;
+        const manos = racimos * merma.nManos;
+        const dedos = racimos * promDedos;
+        return {
+          ...defecto,
+          dedos: Math.round(dedos),
+          manos: Math.round(manos),
+          racimos: Math.round(racimos),
+          pesoRechazado: Number(pesoRechazado.toFixed(2)),
+          porcentaje,
+        };
+      });
+      const racimosDefectos = rRechazados / pesoFruta;
+      const manosDefectos = racimosDefectos * merma.nManos;
+      const dedosDefectos = racimosDefectos * promDedos;
+      defectosMermaGeneral.unshift({
+        defecto: 'Racimos rechazados',
+        dedos: Math.round(dedosDefectos),
+        manos: Math.round(manosDefectos),
+        racimos: Math.round(racimosDefectos),
+        pesoRechazado: Number(rRechazados.toFixed(2)),
+        porcentaje: porcentajeRacimoRechazado,
+      });
+      const totalPorcentajeDefectos = defectosMermaGeneral.reduce(
+        (a, b) => a + b.porcentaje,
+        0,
+      );
+
       return {
+        totalPorcentajeDefectos,
+        defectosMermaGeneral,
         defectosMerma2,
         defectosMerma,
         defectos: nuevoObjeto,
         evaluacion,
         ranch,
+        pesoMerma: merma.mermaCortada.toFixed(2),
         porcentajeContado: Math.round(porcentajeContado),
         porcentajeProcesado: Math.round(porcentajeProcesado),
         porcentajeAprobechado: Math.round(porcentajeAprobechado),
@@ -244,9 +288,19 @@ export class MermaService {
         racimosProcesados: Math.round(rProcesado / pesoFruta),
         racimosRechazados: Math.round(rRechazados / pesoFruta),
         cantidadCajaProcesada: Math.round(cantidadCajaProcesada),
+        pesoRacimo: merma.pesoRacimo,
+        pesoTallo: merma.pesoTallo,
+        pesoFruta: merma.pesoFruta,
+        calibracionPromedio: merma.calibracion,
+        manosPromedio: merma.nManos,
+        edadPromedio: merma.edad,
+        largoDedos: merma.lDedoSegunda,
+        ratioc: merma.ratioC.toFixed(2),
+        ratiop: merma.ratioP.toFixed(2),
         total,
         cajaType: merma.cajas,
         date: merma.fecha,
+        perfilRacimos: merma.perfil,
       };
     });
 
