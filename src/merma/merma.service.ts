@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CajasService } from 'src/cajas/cajas.service';
 import { CreateCajaDto } from 'src/cajas/dto/create-caja.dto';
+import { Sku } from 'src/sku/entities/sku.entity';
 import { Between, Repository } from 'typeorm';
 import { CreateMermaDto } from './dto/create-merma.dto';
 import { UpdateMermaDto } from './dto/update-merma.dto';
@@ -140,8 +141,6 @@ export class MermaService {
         (rCortado - mermaCortada) / pesoFruta,
       );
 
-      const cantidadCajaProcesada = merma.totalCajas;
-
       const ranch = merma.ranch instanceof Ranch && merma.ranch;
 
       const promDedos =
@@ -270,6 +269,26 @@ export class MermaService {
         0,
       );
 
+      const cantidadCajaProcesada = merma.cajas.reduce(
+        (a, b) => a + b.cantidad,
+        0,
+      );
+
+      const cajaType = merma.cajas.map((caja) => {
+        if (caja.sku instanceof Sku) {
+          if (caja.sku.tercero) {
+            return {
+              tipo: 'Terceros',
+              ...caja,
+            };
+          }
+          return {
+            tipo: 'propia',
+            ...caja,
+          };
+        }
+      });
+
       return {
         totalPorcentajeDefectos,
         defectosMermaGeneral,
@@ -298,7 +317,7 @@ export class MermaService {
         ratioc: merma.ratioC.toFixed(2),
         ratiop: merma.ratioP.toFixed(2),
         total,
-        cajaType: merma.cajas,
+        cajaType,
         date: merma.fecha,
         perfilRacimos: merma.perfil,
       };

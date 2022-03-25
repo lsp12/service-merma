@@ -88,6 +88,9 @@ export class Merma {
   @Column({ default: false })
   perfil: boolean;
 
+  @Column()
+  CantidadCJ: number;
+
   @OneToMany(() => Caja, (Caja) => Caja.merma)
   cajas: Caja[];
 

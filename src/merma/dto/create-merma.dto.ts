@@ -57,6 +57,10 @@ export class CreateMermaDto {
   @IsOptional()
   numManosVotadasU: number;
 
+  @IsNumber()
+  @IsOptional()
+  CantidadCJ: number;
+
   @IsOptional()
   skuCajas: ISkuCajas[];
 

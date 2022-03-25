@@ -13,36 +13,39 @@ export class Sku {
   @Column({ type: 'double precision' })
   peso: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   clusters: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   dedosMin: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   dedosMax: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   pesoFrutaFundaMin: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   pesoFrutaFundaMax: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   calibracionMin: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   calibracionMax: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   largoDedoMin: number;
 
-  @Column({ type: 'double precision' })
+  @Column({ type: 'double precision', default: 0 })
   largoDedoMax: number;
 
-  @Column()
+  @Column({ nullable: true })
   empresa: string;
 
-  @OneToMany((type) => Caja, (Caja) => Caja.sku)
+  @Column({ default: false })
+  tercero: boolean;
+
+  @OneToMany(() => Caja, (Caja) => Caja.sku)
   cajas: Caja[];
 }

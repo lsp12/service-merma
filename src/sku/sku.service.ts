@@ -39,6 +39,7 @@ export class SkuService {
   async update(id: number, updateSkuDto: UpdateSkuDto) {
     const sku = await this.skuRepository.findOne(id);
     if (!sku) throw new NotFoundException('No existe un SKU con ese ID');
+    console.log(updateSkuDto);
     await this.skuRepository.update(id, updateSkuDto);
     return updateSkuDto;
   }
