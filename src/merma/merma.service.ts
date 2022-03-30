@@ -50,7 +50,7 @@ export class MermaService {
     const merma = this.MermaRepository.create({
       ...createMermaDto,
       rRechazados: rRechazado,
-      pesoTallo: createMermaDto.pesotallo,
+      pesoTallo: createMermaDto.pesoTallo,
       totalCajas: totalPesoCaja,
       mermaProcesada: pesoProcesado,
       mermaCortada: pesoRechazado,
@@ -324,6 +324,17 @@ export class MermaService {
     });
 
     return mermaHaciendad;
+  }
+
+  async findByDate(date: string) {
+    const merma = await this.MermaRepository.find({
+      where: {
+        fecha: date,
+      },
+      relations: ['ranch'],
+      cache: true,
+    });
+    return merma;
   }
 
   update(id: number, updateMermaDto: UpdateMermaDto) {

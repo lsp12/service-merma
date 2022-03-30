@@ -41,6 +41,9 @@ export class Merma {
   calibracion: number;
 
   @Column({ type: 'double precision' })
+  calibracionUltima: number;
+
+  @Column({ type: 'double precision' })
   nManos: number;
 
   @Column({ type: 'double precision' })

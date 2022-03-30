@@ -32,6 +32,11 @@ export class MermaController {
     return this.mermaService.findAll();
   }
 
+  @Get('/findByDate/:fecha')
+  findByDate(@Param('fecha') fecha: string) {
+    return this.mermaService.findByDate(fecha);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMermaDto: UpdateMermaDto) {
     return this.mermaService.update(+id, updateMermaDto);

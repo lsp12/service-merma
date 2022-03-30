@@ -8,6 +8,7 @@
     "database": "inventariocalidad",
     "synchronize": false,
     "logging": false,
+    "cache": true,
     "entities": [
         "src/entity/**/*.ts",
         "build/entity/**/*.js"

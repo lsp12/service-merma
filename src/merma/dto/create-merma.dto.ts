@@ -24,7 +24,7 @@ export class CreateMermaDto {
   pesoRacimo: number;
 
   @IsNumber()
-  pesotallo: number;
+  pesoTallo: number;
 
   @IsNumber()
   edad: number;

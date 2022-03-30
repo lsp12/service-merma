@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-03-2022 a las 18:33:31
+-- Tiempo de generación: 30-03-2022 a las 21:42:51
 -- Versión del servidor: 10.4.22-MariaDB
 -- Versión de PHP: 8.1.2
 
@@ -65,7 +65,9 @@ INSERT INTO `caja` (`id`, `skuId`, `mermaId`, `cantidad`, `cantidadR`) VALUES
 (36, 4, 12, 54, 2),
 (37, 1, 13, 1080, 4),
 (38, 3, 13, 216, 3),
-(39, 4, 13, 54, 2);
+(39, 4, 13, 54, 2),
+(43, 8, 15, 1280, 1),
+(44, 4, 15, 20, 2);
 
 -- --------------------------------------------------------
 
@@ -582,16 +584,18 @@ CREATE TABLE `merma` (
   `fecha` date DEFAULT NULL,
   `createdAt` timestamp(6) NOT NULL DEFAULT current_timestamp(6),
   `perfil` tinyint(4) NOT NULL DEFAULT 0,
-  `CantidadCJ` int(11) NOT NULL
+  `CantidadCJ` int(11) NOT NULL,
+  `calibracionUltima` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Volcado de datos para la tabla `merma`
 --
 
-INSERT INTO `merma` (`id`, `ranchIdHaciendad`, `rCortado`, `rProcesado`, `rRechazados`, `pesoFruta`, `pesoRacimo`, `pesoTallo`, `edad`, `calibracion`, `nManos`, `pesoSegundaMano`, `pesoUltimaMano`, `lDedoSegunda`, `lDedoUltima`, `mermaProcesada`, `mermaCortada`, `totalCajas`, `numManosVotadasP`, `numManosVotadasU`, `ratioC`, `ratioP`, `pesoCaja`, `fecha`, `createdAt`, `perfil`, `CantidadCJ`) VALUES
-(12, 19, 67708.90000000001, 66923.3, 785.6000000000058, 49.1, 55.2, 6, 11, 43.2, 9.4, 30, 10, 9.5, 7.5, 7523.300000000003, 8308.900000000009, 1414.2857142857142, 0, 0, 1.025587900134673, 1.0376270831149774, 59400, '2022-03-18', '2022-03-21 16:45:22.524491', 0, 3),
-(13, 19, 68260.5, 67468.5, 792, 49.5, 55.2, 6, 10.5, 43.2, 9.4, 25, 10, 9.5, 8.5, 8743.5, 9535.5, 1398.2142857142858, 0, 0, 1.0139334921785974, 1.0258358662613982, 58725, '2022-03-21', '2022-03-21 16:45:22.524491', 1, 3);
+INSERT INTO `merma` (`id`, `ranchIdHaciendad`, `rCortado`, `rProcesado`, `rRechazados`, `pesoFruta`, `pesoRacimo`, `pesoTallo`, `edad`, `calibracion`, `nManos`, `pesoSegundaMano`, `pesoUltimaMano`, `lDedoSegunda`, `lDedoUltima`, `mermaProcesada`, `mermaCortada`, `totalCajas`, `numManosVotadasP`, `numManosVotadasU`, `ratioC`, `ratioP`, `pesoCaja`, `fecha`, `createdAt`, `perfil`, `CantidadCJ`, `calibracionUltima`) VALUES
+(12, 19, 67708.90000000001, 66923.3, 785.6000000000058, 49.1, 55.2, 6, 11, 43.2, 9.4, 30, 10, 9.5, 7.5, 7523.300000000003, 8308.900000000009, 1414.2857142857142, 0, 0, 1.025587900134673, 1.0376270831149774, 59400, '2022-03-18', '2022-03-21 16:45:22.524491', 0, 3, 0),
+(13, 19, 68260.5, 67468.5, 792, 49.5, 55.2, 6, 10.5, 43.2, 9.4, 25, 10, 9.5, 8.5, 8743.5, 9535.5, 1398.2142857142858, 0, 0, 1.0139334921785974, 1.0258358662613982, 58725, '2022-03-21', '2022-03-21 16:45:22.524491', 1, 3, 0),
+(15, 11, 75000, 65000, 10000, 50, 60, 10, 11, 45, 9, 0, 0, 10, 8, 8450, 18450, 56550, 9, 120, 0.8976190476190475, 1.0357142857142856, 56550, '2022-03-28', '2022-03-28 15:54:51.683825', 0, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -766,6 +770,16 @@ CREATE TABLE `query-result-cache` (
   `query` text NOT NULL,
   `result` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `query-result-cache`
+--
+
+INSERT INTO `query-result-cache` (`id`, `identifier`, `time`, `duration`, `query`, `result`) VALUES
+(1, NULL, 1648645574329, 1000, 'SELECT `Merma`.`id` AS `Merma_id`, `Merma`.`rCortado` AS `Merma_rCortado`, `Merma`.`rProcesado` AS `Merma_rProcesado`, `Merma`.`rRechazados` AS `Merma_rRechazados`, `Merma`.`pesoFruta` AS `Merma_pesoFruta`, `Merma`.`pesoRacimo` AS `Merma_pesoRacimo`, `Merma`.`pesoTallo` AS `Merma_pesoTallo`, `Merma`.`edad` AS `Merma_edad`, `Merma`.`calibracion` AS `Merma_calibracion`, `Merma`.`nManos` AS `Merma_nManos`, `Merma`.`pesoSegundaMano` AS `Merma_pesoSegundaMano`, `Merma`.`pesoUltimaMano` AS `Merma_pesoUltimaMano`, `Merma`.`lDedoSegunda` AS `Merma_lDedoSegunda`, `Merma`.`lDedoUltima` AS `Merma_lDedoUltima`, `Merma`.`ratioC` AS `Merma_ratioC`, `Merma`.`ratioP` AS `Merma_ratioP`, `Merma`.`mermaProcesada` AS `Merma_mermaProcesada`, `Merma`.`mermaCortada` AS `Merma_mermaCortada`, `Merma`.`totalCajas` AS `Merma_totalCajas`, `Merma`.`numManosVotadasP` AS `Merma_numManosVotadasP`, `Merma`.`numManosVotadasU` AS `Merma_numManosVotadasU`, `Merma`.`pesoCaja` AS `Merma_pesoCaja`, `Merma`.`fecha` AS `Merma_fecha`, `Merma`.`createdAt` AS `Merma_createdAt`, `Merma`.`perfil` AS `Merma_perfil`, `Merma`.`CantidadCJ` AS `Merma_CantidadCJ`, `Merma`.`ranchIdHaciendad` AS `Merma_ranchIdHaciendad`, `Merma__ranch`.`idHaciendad` AS `Merma__ranch_idHaciendad`, `Merma__ranch`.`nombre` AS `Merma__ranch_nombre`, `Merma__ranch`.`condigoHacienda` AS `Merma__ranch_condigoHacienda`, `Merma__ranch`.`zonaIdZona` AS `Merma__ranch_zonaIdZona` FROM `merma` `Merma` LEFT JOIN `ranch` `Merma__ranch` ON `Merma__ranch`.`idHaciendad`=`Merma`.`ranchIdHaciendad` WHERE `Merma`.`fecha` = ? -- PARAMETERS: [\"2022-03-21\"]', '[{\"Merma_id\":13,\"Merma_rCortado\":68260.5,\"Merma_rProcesado\":67468.5,\"Merma_rRechazados\":792,\"Merma_pesoFruta\":49.5,\"Merma_pesoRacimo\":55.2,\"Merma_pesoTallo\":6,\"Merma_edad\":10.5,\"Merma_calibracion\":43.2,\"Merma_nManos\":9.4,\"Merma_pesoSegundaMano\":25,\"Merma_pesoUltimaMano\":10,\"Merma_lDedoSegunda\":9.5,\"Merma_lDedoUltima\":8.5,\"Merma_ratioC\":1.0139334921785974,\"Merma_ratioP\":1.0258358662613982,\"Merma_mermaProcesada\":8743.5,\"Merma_mermaCortada\":9535.5,\"Merma_totalCajas\":1398.2142857142858,\"Merma_numManosVotadasP\":0,\"Merma_numManosVotadasU\":0,\"Merma_pesoCaja\":58725,\"Merma_fecha\":\"2022-03-21T05:00:00.000Z\",\"Merma_createdAt\":\"2022-03-21T16:45:22.524Z\",\"Merma_perfil\":1,\"Merma_CantidadCJ\":3,\"Merma_ranchIdHaciendad\":19,\"Merma__ranch_idHaciendad\":19,\"Merma__ranch_nombre\":\"San Luis 2\",\"Merma__ranch_condigoHacienda\":\"2174\",\"Merma__ranch_zonaIdZona\":3}]'),
+(2, NULL, 1648484036489, 1000, 'SELECT `Merma`.`id` AS `Merma_id`, `Merma`.`rCortado` AS `Merma_rCortado`, `Merma`.`rProcesado` AS `Merma_rProcesado`, `Merma`.`rRechazados` AS `Merma_rRechazados`, `Merma`.`pesoFruta` AS `Merma_pesoFruta`, `Merma`.`pesoRacimo` AS `Merma_pesoRacimo`, `Merma`.`pesoTallo` AS `Merma_pesoTallo`, `Merma`.`edad` AS `Merma_edad`, `Merma`.`calibracion` AS `Merma_calibracion`, `Merma`.`nManos` AS `Merma_nManos`, `Merma`.`pesoSegundaMano` AS `Merma_pesoSegundaMano`, `Merma`.`pesoUltimaMano` AS `Merma_pesoUltimaMano`, `Merma`.`lDedoSegunda` AS `Merma_lDedoSegunda`, `Merma`.`lDedoUltima` AS `Merma_lDedoUltima`, `Merma`.`ratioC` AS `Merma_ratioC`, `Merma`.`ratioP` AS `Merma_ratioP`, `Merma`.`mermaProcesada` AS `Merma_mermaProcesada`, `Merma`.`mermaCortada` AS `Merma_mermaCortada`, `Merma`.`totalCajas` AS `Merma_totalCajas`, `Merma`.`numManosVotadasP` AS `Merma_numManosVotadasP`, `Merma`.`numManosVotadasU` AS `Merma_numManosVotadasU`, `Merma`.`pesoCaja` AS `Merma_pesoCaja`, `Merma`.`fecha` AS `Merma_fecha`, `Merma`.`createdAt` AS `Merma_createdAt`, `Merma`.`perfil` AS `Merma_perfil`, `Merma`.`CantidadCJ` AS `Merma_CantidadCJ`, `Merma`.`ranchIdHaciendad` AS `Merma_ranchIdHaciendad`, `Merma__ranch`.`idHaciendad` AS `Merma__ranch_idHaciendad`, `Merma__ranch`.`nombre` AS `Merma__ranch_nombre`, `Merma__ranch`.`condigoHacienda` AS `Merma__ranch_condigoHacienda`, `Merma__ranch`.`zonaIdZona` AS `Merma__ranch_zonaIdZona` FROM `merma` `Merma` LEFT JOIN `ranch` `Merma__ranch` ON `Merma__ranch`.`idHaciendad`=`Merma`.`ranchIdHaciendad` WHERE `Merma`.`fecha` = ? -- PARAMETERS: [\"2022-03-28\"]', '[{\"Merma_id\":15,\"Merma_rCortado\":75000,\"Merma_rProcesado\":65000,\"Merma_rRechazados\":10000,\"Merma_pesoFruta\":50,\"Merma_pesoRacimo\":60,\"Merma_pesoTallo\":10,\"Merma_edad\":11,\"Merma_calibracion\":45,\"Merma_nManos\":9,\"Merma_pesoSegundaMano\":0,\"Merma_pesoUltimaMano\":0,\"Merma_lDedoSegunda\":10,\"Merma_lDedoUltima\":8,\"Merma_ratioC\":0.8976190476190475,\"Merma_ratioP\":1.0357142857142856,\"Merma_mermaProcesada\":8450,\"Merma_mermaCortada\":18450,\"Merma_totalCajas\":56550,\"Merma_numManosVotadasP\":9,\"Merma_numManosVotadasU\":120,\"Merma_pesoCaja\":56550,\"Merma_fecha\":\"2022-03-28T05:00:00.000Z\",\"Merma_createdAt\":\"2022-03-28T15:54:51.683Z\",\"Merma_perfil\":0,\"Merma_CantidadCJ\":2,\"Merma_ranchIdHaciendad\":11,\"Merma__ranch_idHaciendad\":11,\"Merma__ranch_nombre\":\"La Delicia\",\"Merma__ranch_condigoHacienda\":\"2177\",\"Merma__ranch_zonaIdZona\":2}]'),
+(3, NULL, 1648649297174, 1000, 'SELECT `Merma`.`id` AS `Merma_id`, `Merma`.`rCortado` AS `Merma_rCortado`, `Merma`.`rProcesado` AS `Merma_rProcesado`, `Merma`.`rRechazados` AS `Merma_rRechazados`, `Merma`.`pesoFruta` AS `Merma_pesoFruta`, `Merma`.`pesoRacimo` AS `Merma_pesoRacimo`, `Merma`.`pesoTallo` AS `Merma_pesoTallo`, `Merma`.`edad` AS `Merma_edad`, `Merma`.`calibracion` AS `Merma_calibracion`, `Merma`.`nManos` AS `Merma_nManos`, `Merma`.`pesoSegundaMano` AS `Merma_pesoSegundaMano`, `Merma`.`pesoUltimaMano` AS `Merma_pesoUltimaMano`, `Merma`.`lDedoSegunda` AS `Merma_lDedoSegunda`, `Merma`.`lDedoUltima` AS `Merma_lDedoUltima`, `Merma`.`ratioC` AS `Merma_ratioC`, `Merma`.`ratioP` AS `Merma_ratioP`, `Merma`.`mermaProcesada` AS `Merma_mermaProcesada`, `Merma`.`mermaCortada` AS `Merma_mermaCortada`, `Merma`.`totalCajas` AS `Merma_totalCajas`, `Merma`.`numManosVotadasP` AS `Merma_numManosVotadasP`, `Merma`.`numManosVotadasU` AS `Merma_numManosVotadasU`, `Merma`.`pesoCaja` AS `Merma_pesoCaja`, `Merma`.`fecha` AS `Merma_fecha`, `Merma`.`createdAt` AS `Merma_createdAt`, `Merma`.`perfil` AS `Merma_perfil`, `Merma`.`CantidadCJ` AS `Merma_CantidadCJ`, `Merma`.`ranchIdHaciendad` AS `Merma_ranchIdHaciendad`, `Merma__ranch`.`idHaciendad` AS `Merma__ranch_idHaciendad`, `Merma__ranch`.`nombre` AS `Merma__ranch_nombre`, `Merma__ranch`.`condigoHacienda` AS `Merma__ranch_condigoHacienda`, `Merma__ranch`.`zonaIdZona` AS `Merma__ranch_zonaIdZona` FROM `merma` `Merma` LEFT JOIN `ranch` `Merma__ranch` ON `Merma__ranch`.`idHaciendad`=`Merma`.`ranchIdHaciendad` WHERE `Merma`.`fecha` = ? -- PARAMETERS: [\"2022-03-30\"]', '[]'),
+(4, NULL, 1648651402121, 1000, 'SELECT `Merma`.`id` AS `Merma_id`, `Merma`.`rCortado` AS `Merma_rCortado`, `Merma`.`rProcesado` AS `Merma_rProcesado`, `Merma`.`rRechazados` AS `Merma_rRechazados`, `Merma`.`pesoFruta` AS `Merma_pesoFruta`, `Merma`.`pesoRacimo` AS `Merma_pesoRacimo`, `Merma`.`pesoTallo` AS `Merma_pesoTallo`, `Merma`.`edad` AS `Merma_edad`, `Merma`.`calibracion` AS `Merma_calibracion`, `Merma`.`calibracionUltima` AS `Merma_calibracionUltima`, `Merma`.`nManos` AS `Merma_nManos`, `Merma`.`pesoSegundaMano` AS `Merma_pesoSegundaMano`, `Merma`.`pesoUltimaMano` AS `Merma_pesoUltimaMano`, `Merma`.`lDedoSegunda` AS `Merma_lDedoSegunda`, `Merma`.`lDedoUltima` AS `Merma_lDedoUltima`, `Merma`.`ratioC` AS `Merma_ratioC`, `Merma`.`ratioP` AS `Merma_ratioP`, `Merma`.`mermaProcesada` AS `Merma_mermaProcesada`, `Merma`.`mermaCortada` AS `Merma_mermaCortada`, `Merma`.`totalCajas` AS `Merma_totalCajas`, `Merma`.`numManosVotadasP` AS `Merma_numManosVotadasP`, `Merma`.`numManosVotadasU` AS `Merma_numManosVotadasU`, `Merma`.`pesoCaja` AS `Merma_pesoCaja`, `Merma`.`fecha` AS `Merma_fecha`, `Merma`.`createdAt` AS `Merma_createdAt`, `Merma`.`perfil` AS `Merma_perfil`, `Merma`.`CantidadCJ` AS `Merma_CantidadCJ`, `Merma`.`ranchIdHaciendad` AS `Merma_ranchIdHaciendad`, `Merma__ranch`.`idHaciendad` AS `Merma__ranch_idHaciendad`, `Merma__ranch`.`nombre` AS `Merma__ranch_nombre`, `Merma__ranch`.`condigoHacienda` AS `Merma__ranch_condigoHacienda`, `Merma__ranch`.`zonaIdZona` AS `Merma__ranch_zonaIdZona` FROM `merma` `Merma` LEFT JOIN `ranch` `Merma__ranch` ON `Merma__ranch`.`idHaciendad`=`Merma`.`ranchIdHaciendad` WHERE `Merma`.`fecha` = ? -- PARAMETERS: [\"2022-03-30\"]', '[]');
 
 -- --------------------------------------------------------
 
@@ -1273,7 +1287,7 @@ ALTER TABLE `assignment`
 -- AUTO_INCREMENT de la tabla `caja`
 --
 ALTER TABLE `caja`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT de la tabla `cajas`
@@ -1357,7 +1371,7 @@ ALTER TABLE `mandated`
 -- AUTO_INCREMENT de la tabla `merma`
 --
 ALTER TABLE `merma`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de la tabla `numero_dedos`
@@ -1387,7 +1401,7 @@ ALTER TABLE `provider`
 -- AUTO_INCREMENT de la tabla `query-result-cache`
 --
 ALTER TABLE `query-result-cache`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `ranch`
