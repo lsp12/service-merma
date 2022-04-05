@@ -332,7 +332,6 @@ export class MermaService {
         fecha: date,
       },
       relations: ['ranch'],
-      cache: true,
     });
     return merma;
   }

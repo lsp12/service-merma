@@ -1,3 +1,4 @@
+import { InjectRepository } from '@nestjs/typeorm';
 import { Color } from 'src/color/entities/color.entity';
 import { DesgloceMerma } from 'src/desgloce-merma/entities/desgloce-merma.entity';
 import { Merma } from 'src/merma/entities/merma.entity';
@@ -11,6 +12,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Repository,
 } from 'typeorm';
 
 @Entity()
@@ -56,4 +58,8 @@ export class PerfilRacimo {
 
   @OneToMany(() => DesgloceMerma, (DesgloceMerma) => DesgloceMerma.perfilRacimo)
   DesgloceMermas: DesgloceMerma[];
+
+  constructor(partial: Partial<PerfilRacimo>) {
+    Object.assign(this, partial);
+  }
 }

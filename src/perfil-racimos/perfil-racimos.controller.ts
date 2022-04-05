@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PerfilRacimosService } from './perfil-racimos.service';
 import { CreatePerfilRacimoDto } from './dto/create-perfil-racimo.dto';
 import { UpdatePerfilRacimoDto } from './dto/update-perfil-racimo.dto';
@@ -23,7 +31,10 @@ export class PerfilRacimosController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePerfilRacimoDto: UpdatePerfilRacimoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updatePerfilRacimoDto: UpdatePerfilRacimoDto,
+  ) {
     return this.perfilRacimosService.update(+id, updatePerfilRacimoDto);
   }
 

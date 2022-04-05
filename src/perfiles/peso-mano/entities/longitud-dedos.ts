@@ -15,6 +15,10 @@ export class LongitudDedos {
   @ManyToOne(
     (type) => PerfilRacimo,
     (PerfilRacimo) => PerfilRacimo.calibraciones,
+    {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
   )
   perfilRacimo: number | PerfilRacimo;
 }

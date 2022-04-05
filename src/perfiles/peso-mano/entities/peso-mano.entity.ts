@@ -15,6 +15,14 @@ export class PesoMano {
   @ManyToOne(
     (type) => PerfilRacimo,
     (PerfilRacimo) => PerfilRacimo.calibraciones,
+    {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
   )
   perfilRacimo: number | PerfilRacimo;
+
+  constructor(partial: Partial<PerfilRacimo>) {
+    Object.assign(this, partial);
+  }
 }

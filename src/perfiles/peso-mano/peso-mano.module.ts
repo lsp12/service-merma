@@ -18,5 +18,6 @@ import { LongitudDedos } from './entities/longitud-dedos';
   ],
   controllers: [PesoManoController],
   providers: [PesoManoService],
+  exports: [PesoManoService],
 })
 export class PesoManoModule {}
