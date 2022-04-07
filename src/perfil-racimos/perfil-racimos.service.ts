@@ -24,6 +24,7 @@ export class PerfilRacimosService {
     await this.connection.manager.save(perfilRacimo.longitudDedos);
     await this.connection.manager.save(perfilRacimo.calibraciones);
     await this.connection.manager.save(perfilRacimo.pesoMano);
+    await this.connection.manager.save(perfilRacimo.DesgloceMermas);
 
     return await this.perfilRacimoRepository.save(perfilRacimo);
   }

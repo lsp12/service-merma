@@ -5,9 +5,9 @@
     "port": 3306, 
     "username": "root", 
     "password": "",
-    "database": "inventariocalida",
-    "synchronize": false,
-    "logging": false,
+    "database": "inventariocalidad",
+    "synchronize": true,
+    "logging": true,
     "cache": true,
     "entities": [
         "src/entity/**/*.ts",

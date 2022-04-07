@@ -13,7 +13,14 @@ export class DesgloceMerma {
   @Column()
   peso: number;
 
-  @ManyToOne(() => PerfilRacimo, (PerfilRacimo) => PerfilRacimo.DesgloceMermas)
+  @ManyToOne(
+    () => PerfilRacimo,
+    (PerfilRacimo) => PerfilRacimo.DesgloceMermas,
+    {
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    },
+  )
   perfilRacimo: number | PerfilRacimo;
 
   @ManyToOne(() => Defecto, (Defecto) => Defecto.desgloceMermas)

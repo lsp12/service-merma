@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CajasService } from 'src/cajas/cajas.service';
 import { CreateCajaDto } from 'src/cajas/dto/create-caja.dto';
@@ -340,7 +340,12 @@ export class MermaService {
     return `This action updates a #${id} merma`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} merma`;
+  async remove(id: number) {
+    const exist = await this.MermaRepository.findOne(id);
+    if (!exist) {
+      throw new NotFoundException(`Merma with id ${id} not found`);
+    }
+    await this.MermaRepository.delete(id);
+    return `Merma with id ${id} deleted`;
   }
 }
