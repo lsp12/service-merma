@@ -1,5 +1,7 @@
+import { DesgloceMano } from 'src/desgloce-manos/entities/desgloce-mano.entity';
 import { DesgloceMerma } from 'src/desgloce-merma/entities/desgloce-merma.entity';
 import { PerfilRacimo } from 'src/perfil-racimos/entities/perfil-racimo.entity';
+import { RejectedBunch } from 'src/rejected-bunches/entities/rejected-bunch.entity';
 import { TipoDefecto } from 'src/tipo-defecto/entities/tipo-defecto.entity';
 import {
   Column,
@@ -24,7 +26,7 @@ export class Defecto {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
-  tipoDefecto: number | TipoDefecto;
+  tipoDefecto: TipoDefecto;
 
   @OneToMany(
     (type) => DesgloceMerma,
@@ -35,4 +37,20 @@ export class Defecto {
     },
   )
   desgloceMermas: DesgloceMerma[];
+
+  @OneToMany((type) => DesgloceMano, (DesgloceMano) => DesgloceMano.defecto, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  DesgloceManos: DesgloceMano[];
+
+  @OneToMany(
+    (type) => RejectedBunch,
+    (RejectedBunch) => RejectedBunch.defecto,
+    {
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    },
+  )
+  rejectedBunches: RejectedBunch[];
 }

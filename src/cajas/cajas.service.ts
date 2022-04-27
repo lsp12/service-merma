@@ -13,7 +13,7 @@ export class CajasService {
   ) {}
 
   async create(createCajaDto: CreateCajaDto[]) {
-    const caja = await this.cajaRepository.create(createCajaDto);
+    const caja = this.cajaRepository.create(createCajaDto);
     const save = await this.cajaRepository.save(caja);
     console.log(save);
   }

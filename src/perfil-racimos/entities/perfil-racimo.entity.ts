@@ -1,5 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
 import { Color } from 'src/color/entities/color.entity';
+import { DesgloceMano } from 'src/desgloce-manos/entities/desgloce-mano.entity';
 import { DesgloceMerma } from 'src/desgloce-merma/entities/desgloce-merma.entity';
 import { Merma } from 'src/merma/entities/merma.entity';
 import { Calibracion } from 'src/perfiles/peso-mano/entities/calibracion';
@@ -12,7 +13,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  Repository,
 } from 'typeorm';
 
 @Entity()

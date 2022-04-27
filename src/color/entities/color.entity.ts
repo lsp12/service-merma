@@ -1,3 +1,5 @@
+import { ColoredBunch } from 'src/colored-bunches/entities/colored-bunch.entity';
+import { Merma } from 'src/merma/entities/merma.entity';
 import { PerfilRacimo } from 'src/perfil-racimos/entities/perfil-racimo.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -13,5 +15,8 @@ export class Color {
   semana: number;
 
   @OneToMany((type) => PerfilRacimo, (PerfilRacimo) => PerfilRacimo.color)
-  perfilRacimo: number | PerfilRacimo;
+  perfilRacimo: PerfilRacimo[];
+
+  @OneToMany((type) => ColoredBunch, (ColoredBunch) => ColoredBunch.color)
+  coloredBunches: ColoredBunch[];
 }

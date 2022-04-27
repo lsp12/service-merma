@@ -4,7 +4,9 @@ import { Repository } from 'typeorm';
 import { CreateColorDto } from './dto/create-color.dto';
 import { UpdateColorDto } from './dto/update-color.dto';
 import { Color } from './entities/color.entity';
-
+import * as moment from 'moment';
+import 'moment/locale/es';
+moment.locale('es-mx');
 @Injectable()
 export class ColorService {
   constructor(
@@ -26,6 +28,33 @@ export class ColorService {
 
   async findAll() {
     return await this.colorRepository.find();
+  }
+
+  async findWeek() {
+    let newColor = [];
+    const week = Number(moment().format('w'));
+
+    const color = await this.colorRepository.find({ order: { semana: 'ASC' } });
+    do {
+      newColor = newColor.concat(color);
+    } while (newColor.length + 1 <= 53);
+
+    const colorByWeek = [13, 12, 11, 10, 9].map((range) => {
+      const date = Number(
+        moment()
+          .week(week - range)
+          .format('w'),
+      );
+      return {
+        color: newColor[date - 1],
+        week: date,
+        age: range,
+      };
+    });
+    return {
+      week,
+      colorByWeek,
+    };
   }
 
   findOne(id: number) {

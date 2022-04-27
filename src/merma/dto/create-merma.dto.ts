@@ -1,4 +1,8 @@
 import { IsNumber, IsOptional } from 'class-validator';
+import { Caja } from 'src/cajas/entities/caja.entity';
+import { Color } from 'src/color/entities/color.entity';
+import { ColoredBunch } from 'src/colored-bunches/entities/colored-bunch.entity';
+import { RejectedBunch } from 'src/rejected-bunches/entities/rejected-bunch.entity';
 import { Sku } from 'src/sku/entities/sku.entity';
 
 export class CreateMermaDto {
@@ -12,7 +16,7 @@ export class CreateMermaDto {
   rProcesado: number;
 
   @IsOptional()
-  cajas: ICajas[];
+  cajas: Caja[];
 
   @IsOptional()
   cajaR: ICajas[];
@@ -62,10 +66,19 @@ export class CreateMermaDto {
   CantidadCJ: number;
 
   @IsOptional()
-  skuCajas: ISkuCajas[];
+  skuCajas: Caja[];
 
   @IsOptional()
   fecha: string;
+
+  @IsOptional()
+  color: Color;
+
+  @IsOptional()
+  coloredBunches: ColoredBunch[];
+
+  @IsOptional()
+  rejectedBunches: RejectedBunch[];
 }
 
 export interface ICajas {
@@ -74,6 +87,6 @@ export interface ICajas {
 
 export interface ISkuCajas {
   sku: Sku;
-  caja: ICajas;
-  cajaR: ICajas;
+  cantidad: ICajas;
+  cantidadR: ICajas;
 }

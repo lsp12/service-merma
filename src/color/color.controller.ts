@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
 } from '@nestjs/common';
@@ -25,12 +25,17 @@ export class ColorController {
     return this.colorService.findAll();
   }
 
+  @Get('findWeek')
+  findWeek() {
+    return this.colorService.findWeek();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.colorService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateColorDto: UpdateColorDto) {
     return this.colorService.update(+id, updateColorDto);
   }

@@ -13,12 +13,6 @@ export class PesoManoService {
   constructor(
     @InjectRepository(PesoMano)
     private readonly pesoManoRepository: Repository<PesoMano>,
-    @InjectRepository(Calibracion)
-    private readonly CalibracionRepository: Repository<Calibracion>,
-    @InjectRepository(NumeroDedos)
-    private readonly NumeroDedosRepository: Repository<NumeroDedos>,
-    @InjectRepository(LongitudDedos)
-    private readonly LongitudDedosRepository: Repository<LongitudDedos>,
   ) {}
   create(createPesoManoDto: CreatePesoManoDto) {
     console.log(createPesoManoDto);

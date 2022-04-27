@@ -9,7 +9,7 @@ export class CreateCajaDto {
   cantidadR: number;
 
   @IsNumber()
-  sku: number | Sku;
+  sku: Sku;
 
   @IsNumber()
   merma: number;

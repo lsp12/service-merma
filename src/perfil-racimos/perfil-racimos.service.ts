@@ -12,7 +12,6 @@ export class PerfilRacimosService {
   constructor(
     @InjectRepository(PerfilRacimo)
     private readonly perfilRacimoRepository: Repository<PerfilRacimo>,
-    private pesoManoService: PesoManoService,
     private connection: Connection,
   ) {}
   async create(createPerfilRacimoDto: CreatePerfilRacimoDto) {

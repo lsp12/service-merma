@@ -12,14 +12,10 @@ export class PesoMano {
   @Column({ type: 'double precision' })
   pesoMano: number;
 
-  @ManyToOne(
-    (type) => PerfilRacimo,
-    (PerfilRacimo) => PerfilRacimo.calibraciones,
-    {
-      onUpdate: 'CASCADE',
-      onDelete: 'CASCADE',
-    },
-  )
+  @ManyToOne((type) => PerfilRacimo, (PerfilRacimo) => PerfilRacimo.pesoMano, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   perfilRacimo: number | PerfilRacimo;
 
   constructor(partial: Partial<PerfilRacimo>) {

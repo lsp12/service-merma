@@ -12,9 +12,15 @@ import { ColorModule } from './color/color.module';
 import { PesoManoModule } from './perfiles/peso-mano/peso-mano.module';
 import { TipoDefectoModule } from './tipo-defecto/tipo-defecto.module';
 import { DesgloceMermaModule } from './desgloce-merma/desgloce-merma.module';
+import { ColoredBunchesModule } from './colored-bunches/colored-bunches.module';
+import { DesgloceManosModule } from './desgloce-manos/desgloce-manos.module';
+import { RejectedBunchesModule } from './rejected-bunches/rejected-bunches.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TasksService } from './tasks/tasks.service';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     MermaModule,
     TypeOrmModule.forRootAsync({
       useFactory: async () =>
@@ -30,8 +36,11 @@ import { DesgloceMermaModule } from './desgloce-merma/desgloce-merma.module';
     PesoManoModule,
     TipoDefectoModule,
     DesgloceMermaModule,
+    ColoredBunchesModule,
+    DesgloceManosModule,
+    RejectedBunchesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, TasksService],
 })
 export class AppModule {}

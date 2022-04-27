@@ -14,7 +14,7 @@ export class Caja {
   cantidadR: number;
 
   @ManyToOne((type) => Sku, (Sku) => Sku.cajas)
-  sku: number | Sku;
+  sku: Sku;
 
   @ManyToOne((type) => Merma, (merma) => merma.cajas, {
     cascade: true,

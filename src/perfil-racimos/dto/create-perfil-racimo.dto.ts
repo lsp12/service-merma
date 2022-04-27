@@ -1,4 +1,4 @@
-import { IsNumber, IsObject, IsOptional, Validate } from 'class-validator';
+import { IsNumber, IsOptional, Validate } from 'class-validator';
 import { DesgloceMerma } from 'src/desgloce-merma/entities/desgloce-merma.entity';
 import { Merma } from 'src/merma/entities/merma.entity';
 import { Calibracion } from 'src/perfiles/peso-mano/entities/calibracion';
@@ -19,15 +19,19 @@ export class CreatePerfilRacimoDto {
   @IsOptional()
   merma: Merma;
 
+  @IsOptional()
   @Validate(Calibracion)
   calibraciones: Calibracion[];
 
+  @IsOptional()
   @Validate(LongitudDedos)
   longitudDedos: LongitudDedos[];
 
+  @IsOptional()
   @Validate(NumeroDedos)
   numeroDedos: NumeroDedos[];
 
+  @IsOptional()
   @Validate(PesoMano)
   pesoMano: PesoMano[];
 

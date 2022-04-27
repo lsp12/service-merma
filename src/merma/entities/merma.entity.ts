@@ -1,5 +1,9 @@
 import { Caja } from 'src/cajas/entities/caja.entity';
+import { Color } from 'src/color/entities/color.entity';
+import { ColoredBunch } from 'src/colored-bunches/entities/colored-bunch.entity';
+import { DesgloceMano } from 'src/desgloce-manos/entities/desgloce-mano.entity';
 import { PerfilRacimo } from 'src/perfil-racimos/entities/perfil-racimo.entity';
+import { RejectedBunch } from 'src/rejected-bunches/entities/rejected-bunch.entity';
 import { Sku } from 'src/sku/entities/sku.entity';
 import {
   Column,
@@ -47,12 +51,6 @@ export class Merma {
   nManos: number;
 
   @Column({ type: 'double precision' })
-  pesoSegundaMano: number;
-
-  @Column({ type: 'double precision' })
-  pesoUltimaMano: number;
-
-  @Column({ type: 'double precision' })
   lDedoSegunda: number;
 
   @Column({ type: 'double precision' })
@@ -88,11 +86,8 @@ export class Merma {
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
-  @Column({ default: false })
-  perfil: boolean;
-
-  @Column()
-  CantidadCJ: number;
+  @ManyToOne(() => Ranch, (Ranch) => Ranch.merma)
+  ranch: number | Ranch;
 
   @OneToMany(() => Caja, (Caja) => Caja.merma)
   cajas: Caja[];
@@ -100,6 +95,12 @@ export class Merma {
   @OneToMany(() => PerfilRacimo, (PerfilRacimo) => PerfilRacimo.merma)
   perfilRacimos: PerfilRacimo[];
 
-  @ManyToOne(() => Ranch, (Ranch) => Ranch.merma)
-  ranch: number | Ranch;
+  @OneToMany(() => ColoredBunch, (ColoredBunch) => ColoredBunch.merma)
+  coloredBunches: ColoredBunch[];
+
+  @OneToMany(() => DesgloceMano, (DesgloceMano) => DesgloceMano.perfilRacimo)
+  DesgloceManos: DesgloceMano[];
+
+  @OneToMany(() => RejectedBunch, (RejectedBunch) => RejectedBunch.merma)
+  rejectedBunches: RejectedBunch[];
 }

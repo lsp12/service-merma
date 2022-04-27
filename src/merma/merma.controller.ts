@@ -18,7 +18,6 @@ export class MermaController {
 
   @Post()
   create(@Body() createMermaDto: CreateMermaDto) {
-    console.log(createMermaDto);
     return this.mermaService.create(createMermaDto);
   }
 
@@ -30,6 +29,11 @@ export class MermaController {
   @Get()
   findAll() {
     return this.mermaService.findAll();
+  }
+
+  @Get('findByRanch/:id')
+  findByRanch(@Param('id') id: string) {
+    return this.mermaService.findByRanch(+id);
   }
 
   @Get('/findByDate/:fecha')

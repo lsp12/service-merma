@@ -1,5 +1,7 @@
+import { Ranch } from '../entities/ranch.entity';
+
 export interface IFindMerma {
-  ranch: number;
+  ranch: Ranch;
   createdAt: string;
   fechaInicio: string;
   fechaFin: string;

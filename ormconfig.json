@@ -6,8 +6,8 @@
     "username": "root", 
     "password": "",
     "database": "inventariocalidad",
-    "synchronize": true,
-    "logging": true,
+    "synchronize": false,
+    "logging": false,
     "cache": true,
     "entities": [
         "src/entity/**/*.ts",
