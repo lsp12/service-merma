@@ -3,7 +3,6 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Merma } from './merma.entity';
@@ -19,6 +18,9 @@ export class Ranch {
 
   @Column()
   condigoHacienda: string;
+
+  @Column({ default: true })
+  estado: boolean;
 
   @ManyToOne(() => Zona, (Zona) => Zona.ranch)
   zona: number;
