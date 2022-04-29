@@ -1,6 +1,7 @@
 import { IsNumber, IsOptional, Validate } from 'class-validator';
 import { DesgloceMerma } from 'src/desgloce-merma/entities/desgloce-merma.entity';
 import { Merma } from 'src/merma/entities/merma.entity';
+import { Ranch } from 'src/merma/entities/ranch.entity';
 import { Calibracion } from 'src/perfiles/peso-mano/entities/calibracion';
 import { LongitudDedos } from 'src/perfiles/peso-mano/entities/longitud-dedos';
 import { NumeroDedos } from 'src/perfiles/peso-mano/entities/numero-dedos.entity';
@@ -17,7 +18,7 @@ export class CreatePerfilRacimoDto {
   lote: number;
 
   @IsOptional()
-  merma: Merma;
+  ranch: Ranch;
 
   @IsOptional()
   @Validate(Calibracion)
@@ -38,4 +39,7 @@ export class CreatePerfilRacimoDto {
   @IsOptional()
   @Validate(DesgloceMerma)
   DesgloceMermas: DesgloceMerma[];
+
+  @IsOptional()
+  merma: { ranch: Ranch; fecha: string } & Merma;
 }

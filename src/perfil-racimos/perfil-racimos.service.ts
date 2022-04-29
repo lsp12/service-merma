@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import * as moment from 'moment';
+import { Merma } from 'src/merma/entities/merma.entity';
 import { PesoMano } from 'src/perfiles/peso-mano/entities/peso-mano.entity';
 import { PesoManoService } from 'src/perfiles/peso-mano/peso-mano.service';
 import { Connection, Repository } from 'typeorm';
@@ -15,17 +17,47 @@ export class PerfilRacimosService {
     private connection: Connection,
   ) {}
   async create(createPerfilRacimoDto: CreatePerfilRacimoDto) {
-    const perfilRacimo = await this.perfilRacimoRepository.create(
-      createPerfilRacimoDto,
-    );
+    const merma = await this.connection.getRepository(Merma).findOne({
+      where: {
+        ranch: createPerfilRacimoDto.ranch,
+        fecha: moment().format('YYYY-MM-DD'),
+      },
+    });
 
-    await this.connection.manager.save(perfilRacimo.numeroDedos);
-    await this.connection.manager.save(perfilRacimo.longitudDedos);
-    await this.connection.manager.save(perfilRacimo.calibraciones);
-    await this.connection.manager.save(perfilRacimo.pesoMano);
-    await this.connection.manager.save(perfilRacimo.DesgloceMermas);
+    if (merma === undefined) {
+      const data = await this.connection.getRepository(Merma).save({
+        ranch: createPerfilRacimoDto.ranch,
+        fecha: moment().format('YYYY-MM-DD'),
+      });
 
-    return await this.perfilRacimoRepository.save(perfilRacimo);
+      const perfilRacimo = await this.perfilRacimoRepository.create({
+        ...createPerfilRacimoDto,
+        merma: data,
+      });
+
+      await this.connection.manager.save(perfilRacimo.numeroDedos);
+      await this.connection.manager.save(perfilRacimo.longitudDedos);
+      await this.connection.manager.save(perfilRacimo.calibraciones);
+      await this.connection.manager.save(perfilRacimo.pesoMano);
+      await this.connection.manager.save(perfilRacimo.DesgloceMermas);
+
+      return await this.perfilRacimoRepository.save(perfilRacimo);
+    } else {
+      const perfilRacimo = await this.perfilRacimoRepository.create({
+        ...createPerfilRacimoDto,
+        merma: merma,
+      });
+
+      await this.connection.manager.save(perfilRacimo.numeroDedos);
+      await this.connection.manager.save(perfilRacimo.longitudDedos);
+      await this.connection.manager.save(perfilRacimo.calibraciones);
+      await this.connection.manager.save(perfilRacimo.pesoMano);
+      await this.connection.manager.save(perfilRacimo.DesgloceMermas);
+
+      return await this.perfilRacimoRepository.save(perfilRacimo);
+    }
+
+    console.log(createPerfilRacimoDto.ranch, moment().format('YYYY-MM-DD'));
   }
 
   findAll() {

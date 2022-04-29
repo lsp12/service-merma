@@ -6,10 +6,11 @@ import { Merma } from './entities/merma.entity';
 import { Ranch } from './entities/ranch.entity';
 import { Zona } from './entities/zona.entity';
 import { CajasModule } from 'src/cajas/cajas.module';
+import { RanchService } from './ranch/ranch.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Merma, Ranch, Zona]), CajasModule],
   controllers: [MermaController],
-  providers: [MermaService],
+  providers: [MermaService, RanchService],
 })
 export class MermaModule {}

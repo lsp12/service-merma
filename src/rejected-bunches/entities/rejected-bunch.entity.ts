@@ -13,9 +13,15 @@ export class RejectedBunch {
   @Column()
   lote: number;
 
-  @ManyToOne((type) => Defecto, (Defecto) => Defecto.rejectedBunches)
+  @ManyToOne((type) => Defecto, (Defecto) => Defecto.rejectedBunches, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   defecto: Defecto;
 
-  @ManyToOne((type) => Merma, (Merma) => Merma.rejectedBunches)
+  @ManyToOne((type) => Merma, (Merma) => Merma.rejectedBunches, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   merma: Merma;
 }

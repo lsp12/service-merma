@@ -11,14 +11,24 @@ import { MermaService } from './merma.service';
 import { CreateMermaDto } from './dto/create-merma.dto';
 import { UpdateMermaDto } from './dto/update-merma.dto';
 import { IFindMerma } from './Interface/InterfaceMerma';
+import { RanchService } from './ranch/ranch.service';
+import { Ranch } from './entities/ranch.entity';
 
 @Controller('merma')
 export class MermaController {
-  constructor(private readonly mermaService: MermaService) {}
+  constructor(
+    private readonly mermaService: MermaService,
+    private readonly RanchService: RanchService,
+  ) {}
 
   @Post()
   create(@Body() createMermaDto: CreateMermaDto) {
     return this.mermaService.create(createMermaDto);
+  }
+
+  @Post('/login')
+  login(@Body() ranch: any) {
+    return this.RanchService.login(ranch);
   }
 
   @Post('/findMerma')

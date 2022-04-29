@@ -47,14 +47,26 @@ export class MermaService {
       pesoCaja: totalPesoCaja,
     });
 
+    const exist = await this.MermaRepository.findOne({
+      ranch: createMermaDto.ranch,
+      fecha: moment().format('YYYY-MM-DD'),
+    });
+
     await this.connection.manager.save(merma.cajas);
     await this.connection.manager.save(merma.coloredBunches);
     await this.connection.manager.save(merma.DesgloceManos);
     await this.connection.manager.save(merma.rejectedBunches);
 
-    const response = await this.MermaRepository.save(merma);
-
-    return response;
+    if (exist) {
+      const response = await this.MermaRepository.save({
+        ...merma,
+        id: exist.id,
+      });
+      return response;
+    } else {
+      const response = await this.MermaRepository.save(merma);
+      return response;
+    }
   }
 
   async findByRanch(ranch: number) {
@@ -397,29 +409,30 @@ export class MermaService {
 
       const manosObject = {};
 
-      manosMerma.forEach((x) => {
-        //Si el objeto no existe lo creamos
-        if (!manosObject[x.defecto]) {
-          manosObject[x.defecto] = {
-            tipoDefecto: x.tipoDefecto,
-            defecto: x.defecto,
-            dedos: x.dedos,
-            manos: x.manos,
-            racimos: x.racimos,
-            pesoRechazado: x.pesoRechazado,
-            porcentaje: x.porcentaje,
-            porcentajeMM: x.porcentajeMM,
-          };
-        } else {
-          //Si el objeto existe lo sumamos
-          manosObject[x.defecto].dedos += x.dedos;
-          manosObject[x.defecto].manos += x.manos;
-          manosObject[x.defecto].racimos += x.racimos;
-          manosObject[x.defecto].pesoRechazado += x.pesoRechazado;
-          manosObject[x.defecto].porcentaje += x.porcentaje;
-          manosObject[x.defecto].porcentajeMM += x.porcentajeMM;
-        }
-      });
+      mamnos &&
+        manosMerma.forEach((x) => {
+          //Si el objeto no existe lo creamos
+          if (!manosObject[x.defecto]) {
+            manosObject[x.defecto] = {
+              tipoDefecto: x.tipoDefecto,
+              defecto: x.defecto,
+              dedos: x.dedos,
+              manos: x.manos,
+              racimos: x.racimos,
+              pesoRechazado: x.pesoRechazado,
+              porcentaje: x.porcentaje,
+              porcentajeMM: x.porcentajeMM,
+            };
+          } else {
+            //Si el objeto existe lo sumamos
+            manosObject[x.defecto].dedos += x.dedos;
+            manosObject[x.defecto].manos += x.manos;
+            manosObject[x.defecto].racimos += x.racimos;
+            manosObject[x.defecto].pesoRechazado += x.pesoRechazado;
+            manosObject[x.defecto].porcentaje += x.porcentaje;
+            manosObject[x.defecto].porcentajeMM += x.porcentajeMM;
+          }
+        });
 
       return {
         coloredBunches: merma.coloredBunches,
