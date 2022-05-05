@@ -51,6 +51,11 @@ export class MermaController {
     return this.mermaService.findByDate(fecha);
   }
 
+  @Get('/resagadas/:ranch')
+  findResagadas(@Param('ranch') ranch: number) {
+    return this.mermaService.findResagadas(ranch);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMermaDto: UpdateMermaDto) {
     return this.mermaService.update(+id, updateMermaDto);

@@ -80,6 +80,14 @@ export class MermaService {
     return `This action returns all merma`;
   }
 
+  async findResagadas(ranch: number) {
+    const mermas = await this.MermaRepository.find({
+      where: { ranch, mermaCortada: 0 },
+      relations: ['ranch'],
+    });
+    return mermas;
+  }
+
   async findOne(findMermaDto: IFindMerma) {
     //consulta a la base de datos
 
