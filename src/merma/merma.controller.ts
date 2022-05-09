@@ -36,6 +36,11 @@ export class MermaController {
     return this.mermaService.findOne(findMermaDto);
   }
 
+  @Post('/createResagados')
+  createResagados(@Body() createMermaDto: CreateMermaDto) {
+    return this.mermaService.createResagados(createMermaDto);
+  }
+
   @Get()
   findAll() {
     return this.mermaService.findAll();

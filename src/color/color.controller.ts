@@ -30,6 +30,11 @@ export class ColorController {
     return this.colorService.findWeek();
   }
 
+  @Get('findWeek/:date')
+  getWeekByDate(@Param('date') date: string) {
+    return this.colorService.getWeekByDate(date);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.colorService.findOne(+id);

@@ -20,6 +20,15 @@ export class PerfilRacimosController {
     return this.perfilRacimosService.create(createPerfilRacimoDto);
   }
 
+  @Post('/CreatePerfilRacimoResagado')
+  CreatePerfilRacimoResagado(
+    @Body() CreatePerfilRacimoDto: CreatePerfilRacimoDto,
+  ) {
+    return this.perfilRacimosService.CreatePerfilRacimoResagado(
+      CreatePerfilRacimoDto,
+    );
+  }
+
   @Get()
   findAll() {
     return this.perfilRacimosService.findAll();

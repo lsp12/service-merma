@@ -40,6 +40,7 @@ export class CreateMermaDto {
   nManos: number;
 
   @IsNumber()
+  @IsOptional()
   pesoSegundaMano: number;
 
   @IsNumber()
@@ -79,6 +80,9 @@ export class CreateMermaDto {
 
   @IsOptional()
   rejectedBunches: RejectedBunch[];
+
+  @IsOptional()
+  resagados: any;
 }
 
 export interface ICajas {

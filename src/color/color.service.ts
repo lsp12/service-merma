@@ -57,6 +57,32 @@ export class ColorService {
     };
   }
 
+  async getWeekByDate(date: string) {
+    const week = Number(moment(date).format('w'));
+    const color = await this.colorRepository.find({ order: { semana: 'ASC' } });
+    let newColor = [];
+    do {
+      newColor = newColor.concat(color);
+    } while (newColor.length + 1 <= 53);
+    const colorByWeek = [13, 12, 11, 10, 9].map((range) => {
+      const newDate = Number(
+        moment(date)
+          .week(week - range)
+          .format('w'),
+      );
+      return {
+        color: newColor[newDate - 1],
+        week: newDate,
+        age: range,
+      };
+    });
+
+    return {
+      colorByWeek,
+      week,
+    };
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} color`;
   }

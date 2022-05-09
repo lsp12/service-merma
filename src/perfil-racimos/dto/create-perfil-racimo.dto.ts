@@ -42,4 +42,7 @@ export class CreatePerfilRacimoDto {
 
   @IsOptional()
   merma: { ranch: Ranch; fecha: string } & Merma;
+
+  @IsOptional()
+  resagados: any;
 }

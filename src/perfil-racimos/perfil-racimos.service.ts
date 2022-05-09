@@ -56,8 +56,23 @@ export class PerfilRacimosService {
 
       return await this.perfilRacimoRepository.save(perfilRacimo);
     }
+  }
 
-    console.log(createPerfilRacimoDto.ranch, moment().format('YYYY-MM-DD'));
+  async CreatePerfilRacimoResagado(
+    CreatePerfilRacimoDto: CreatePerfilRacimoDto,
+  ) {
+    const perfilRacimo = await this.perfilRacimoRepository.create({
+      ...CreatePerfilRacimoDto,
+      merma: CreatePerfilRacimoDto.resagados,
+    });
+    await this.connection.manager.save(perfilRacimo.numeroDedos);
+    await this.connection.manager.save(perfilRacimo.longitudDedos);
+    await this.connection.manager.save(perfilRacimo.calibraciones);
+    await this.connection.manager.save(perfilRacimo.pesoMano);
+    await this.connection.manager.save(perfilRacimo.DesgloceMermas);
+
+    console.log(perfilRacimo);
+    return await this.perfilRacimoRepository.save(perfilRacimo);
   }
 
   findAll() {

@@ -69,6 +69,49 @@ export class MermaService {
     }
   }
 
+  async createResagados(createMermaDto: CreateMermaDto) {
+    const { rCortado, rProcesado, pesoFruta } = createMermaDto;
+    createMermaDto.rCortado = pesoFruta * rCortado;
+    createMermaDto.rProcesado = pesoFruta * rProcesado;
+    const rRechazado = createMermaDto.rCortado - createMermaDto.rProcesado;
+
+    const cajas = createMermaDto.skuCajas.map((caja) => {
+      return { cantidad: caja.cantidad, peso: caja.sku.peso };
+    });
+
+    const pesoCaja = cajas.map((caja) => {
+      return caja.peso * caja.cantidad;
+    });
+
+    const totalPesoCaja = pesoCaja.reduce((a, b) => a + b, 0);
+
+    const pesoProcesado = createMermaDto.rProcesado - totalPesoCaja;
+    const pesoRechazado = pesoProcesado + rRechazado;
+
+    const merma = this.MermaRepository.create({
+      ...createMermaDto,
+      rRechazados: rRechazado,
+      pesoTallo: createMermaDto.pesoTallo,
+      totalCajas: totalPesoCaja,
+      mermaProcesada: pesoProcesado,
+      mermaCortada: pesoRechazado,
+      ratioC: totalPesoCaja / 42 / rCortado,
+      ratioP: totalPesoCaja / 42 / rProcesado,
+      pesoCaja: totalPesoCaja,
+    });
+
+    await this.connection.manager.save(merma.cajas);
+    await this.connection.manager.save(merma.coloredBunches);
+    await this.connection.manager.save(merma.DesgloceManos);
+    await this.connection.manager.save(merma.rejectedBunches);
+
+    const response = await this.MermaRepository.save({
+      id: createMermaDto.resagados.id,
+      ...merma,
+    });
+    return response;
+  }
+
   async findByRanch(ranch: number) {
     const mermas = await this.MermaRepository.findOne({
       where: { ranch, fecha: moment().format('YYYY-MM-DD') },
@@ -490,13 +533,6 @@ export class MermaService {
     const merma2 = await this.MermaRepository.find({
       where: {
         fecha: Between(yesterday, date),
-      },
-      relations: ['ranch'],
-    });
-
-    const merma = await this.MermaRepository.find({
-      where: {
-        fecha: date,
       },
       relations: ['ranch'],
     });
