@@ -15,7 +15,6 @@ export class PesoManoService {
     private readonly pesoManoRepository: Repository<PesoMano>,
   ) {}
   create(createPesoManoDto: CreatePesoManoDto) {
-    console.log(createPesoManoDto);
     return 'This action adds a new pesoMano';
   }
 

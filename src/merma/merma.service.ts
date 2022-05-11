@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
 import { Sku } from 'src/sku/entities/sku.entity';
-import { Between, Connection, Repository } from 'typeorm';
+import { Between, Connection, MoreThan, Not, Repository } from 'typeorm';
 import { CreateMermaDto } from './dto/create-merma.dto';
 import { UpdateMermaDto } from './dto/update-merma.dto';
 import { Merma } from './entities/merma.entity';
@@ -138,6 +138,7 @@ export class MermaService {
       where: {
         fecha: Between(findMermaDto.fechaInicio, findMermaDto.fechaFin),
         ranch: findMermaDto.ranch,
+        mermaCortada: MoreThan(0),
       },
       relations: [
         'coloredBunches',
@@ -154,6 +155,9 @@ export class MermaService {
         'perfilRacimos.DesgloceMermas.defecto',
         'perfilRacimos.DesgloceMermas.defecto.tipoDefecto',
       ],
+      order: {
+        fecha: 'ASC',
+      },
     });
 
     //mapeo de la consulta
@@ -537,6 +541,41 @@ export class MermaService {
       relations: ['ranch'],
     });
     return merma2;
+  }
+
+  async history(ranch: number) {
+    const merma = await this.MermaRepository.find({
+      where: {
+        ranch: ranch,
+      },
+      relations: ['ranch'],
+    });
+    return merma;
+  }
+
+  async followByMerma() {
+    const now = moment().format('YYYY-MM-DD');
+    const followUp = await this.MermaRepository.find({
+      where: {
+        fecha: now,
+      },
+      relations: ['ranch', 'ranch.zona', 'perfilRacimos'],
+      order: {
+        ranch: 'ASC',
+      },
+    });
+
+    const resagadas = await this.MermaRepository.find({
+      where: {
+        mermaCortada: 0,
+      },
+      order: {
+        fecha: 'ASC',
+      },
+      relations: ['ranch'],
+    });
+
+    return { followUp, resagadas };
   }
 
   update(id: number, updateMermaDto: UpdateMermaDto) {

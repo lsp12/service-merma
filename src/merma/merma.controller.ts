@@ -61,6 +61,16 @@ export class MermaController {
     return this.mermaService.findResagadas(ranch);
   }
 
+  @Get('/followByMerma')
+  followByMerma() {
+    return this.mermaService.followByMerma();
+  }
+
+  @Get('/history/:id')
+  history(@Param('id') id: string) {
+    return this.mermaService.history(+id);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMermaDto: UpdateMermaDto) {
     return this.mermaService.update(+id, updateMermaDto);

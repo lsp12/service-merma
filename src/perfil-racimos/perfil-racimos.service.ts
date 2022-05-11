@@ -61,18 +61,43 @@ export class PerfilRacimosService {
   async CreatePerfilRacimoResagado(
     CreatePerfilRacimoDto: CreatePerfilRacimoDto,
   ) {
-    const perfilRacimo = await this.perfilRacimoRepository.create({
-      ...CreatePerfilRacimoDto,
-      merma: CreatePerfilRacimoDto.resagados,
+    const exist = await this.connection.getRepository(Merma).findOne({
+      where: {
+        ranch: CreatePerfilRacimoDto.ranch,
+        fecha: CreatePerfilRacimoDto.resagados,
+      },
     });
-    await this.connection.manager.save(perfilRacimo.numeroDedos);
-    await this.connection.manager.save(perfilRacimo.longitudDedos);
-    await this.connection.manager.save(perfilRacimo.calibraciones);
-    await this.connection.manager.save(perfilRacimo.pesoMano);
-    await this.connection.manager.save(perfilRacimo.DesgloceMermas);
 
-    console.log(perfilRacimo);
-    return await this.perfilRacimoRepository.save(perfilRacimo);
+    if (exist === undefined) {
+      const data = await this.connection.getRepository(Merma).save({
+        ranch: CreatePerfilRacimoDto.ranch,
+        fecha: CreatePerfilRacimoDto.resagados,
+      });
+
+      const perfilRacimo = await this.perfilRacimoRepository.create({
+        ...CreatePerfilRacimoDto,
+        merma: data,
+      });
+      await this.connection.manager.save(perfilRacimo.numeroDedos);
+      await this.connection.manager.save(perfilRacimo.longitudDedos);
+      await this.connection.manager.save(perfilRacimo.calibraciones);
+      await this.connection.manager.save(perfilRacimo.pesoMano);
+      await this.connection.manager.save(perfilRacimo.DesgloceMermas);
+
+      return await this.perfilRacimoRepository.save(perfilRacimo);
+    } else {
+      const perfilRacimo = await this.perfilRacimoRepository.create({
+        ...CreatePerfilRacimoDto,
+        merma: exist,
+      });
+      await this.connection.manager.save(perfilRacimo.numeroDedos);
+      await this.connection.manager.save(perfilRacimo.longitudDedos);
+      await this.connection.manager.save(perfilRacimo.calibraciones);
+      await this.connection.manager.save(perfilRacimo.pesoMano);
+      await this.connection.manager.save(perfilRacimo.DesgloceMermas);
+
+      return await this.perfilRacimoRepository.save(perfilRacimo);
+    }
   }
 
   findAll() {

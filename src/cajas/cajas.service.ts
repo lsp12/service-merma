@@ -15,7 +15,6 @@ export class CajasService {
   async create(createCajaDto: CreateCajaDto[]) {
     const caja = this.cajaRepository.create(createCajaDto);
     const save = await this.cajaRepository.save(caja);
-    console.log(save);
   }
 
   async findByMerma(id: number) {
