@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Get, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
 import { Sku } from 'src/sku/entities/sku.entity';
@@ -576,6 +576,21 @@ export class MermaService {
     });
 
     return { followUp, resagadas };
+  }
+
+  async findPerfilRacimoByRanchAndDate(ranch: number, date: string) {
+    const merma = await this.MermaRepository.findOne({
+      where: {
+        ranch: ranch,
+        fecha: date,
+      },
+      relations: ['ranch', 'perfilRacimos'],
+    });
+    if (merma) {
+      return merma.perfilRacimos.length;
+    } else {
+      return 0;
+    }
   }
 
   update(id: number, updateMermaDto: UpdateMermaDto) {

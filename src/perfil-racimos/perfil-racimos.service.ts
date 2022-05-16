@@ -100,6 +100,20 @@ export class PerfilRacimosService {
     }
   }
 
+  async findByRanch(ranch: number, fecha: string) {
+    const count = await this.perfilRacimoRepository.find({
+      where: {
+        merma: {
+          ranch: ranch,
+          fecha: fecha,
+        },
+      },
+      relations: ['merma'],
+    });
+    console.log(count);
+    return count;
+  }
+
   findAll() {
     return `This action returns all perfilRacimos`;
   }

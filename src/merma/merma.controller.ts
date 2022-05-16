@@ -71,6 +71,14 @@ export class MermaController {
     return this.mermaService.history(+id);
   }
 
+  @Get('count/:ranch/:fecha')
+  findByRanchandDate(
+    @Param('ranch') ranch: string,
+    @Param('fecha') fecha: string,
+  ) {
+    return this.mermaService.findPerfilRacimoByRanchAndDate(+ranch, fecha);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMermaDto: UpdateMermaDto) {
     return this.mermaService.update(+id, updateMermaDto);
