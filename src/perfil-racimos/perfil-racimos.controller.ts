@@ -47,6 +47,14 @@ export class PerfilRacimosController {
     return this.perfilRacimosService.findByRanch(+ranch, fecha);
   }
 
+  @Get('/findByRanchPerfiles/:ranch/:week')
+  findByRanchPerfiles(
+    @Param('ranch') ranch: string,
+    @Param('week') week: string,
+  ) {
+    return this.perfilRacimosService.findByRanchPerfiles(+ranch, +week);
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,

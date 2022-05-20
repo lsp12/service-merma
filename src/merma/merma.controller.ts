@@ -79,6 +79,19 @@ export class MermaController {
     return this.mermaService.findPerfilRacimoByRanchAndDate(+ranch, fecha);
   }
 
+  @Get('/findWeek/:week')
+  findByWeek(@Param('week') week: string) {
+    return this.mermaService.findByWeek(+week);
+  }
+
+  @Get('/getPerfilesRacimos/:ranch/:week')
+  getPerfilesRacimos(
+    @Param('ranch') ranch: string,
+    @Param('week') week: string,
+  ) {
+    return this.mermaService.getPerfilesRacimos(+ranch, +week);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateMermaDto: UpdateMermaDto) {
     return this.mermaService.update(+id, updateMermaDto);

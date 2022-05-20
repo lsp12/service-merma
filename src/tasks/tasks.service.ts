@@ -1,11 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { Cron } from '@nestjs/schedule';
 import * as nodemailer from 'nodemailer';
+import xoauth2 from 'xoauth2';
 
 @Injectable()
 export class TasksService {
   private readonly logger = new Logger(TasksService.name);
 
-  /* @Cron('45 * * * * *') */
+  /* @Cron('2 * * * * *') */
   /* @Cron('0 30 23 * * 1-6') */
   handleCron() {
     async function main() {
@@ -14,20 +16,31 @@ export class TasksService {
       /* const testAccount = await nodemailer.createTestAccount(); */
 
       // create reusable transporter object using the default SMTP transport
-      const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+      /* const transporter = nodemailer.createTransport({
+        host: 'smtp-mail.outlook.com',
         port: 587,
         secure: false, // true for 465, false for other ports
+        tls: {
+          ciphers: 'SSLv3',
+        },
         auth: {
-          user: 'jonathankenny852@gmail.com', // generated ethereal user
-          pass: 'Jonathankenny622001', // generated ethereal password
+          user: 'estadisticaMerma852@hotmail.com', // generated ethereal user
+          pass: 'Galito852', // generated ethereal password
+        },
+      }); */
+
+      const transporter = nodemailer.createTransport({
+        service: 'hotmail',
+        auth: {
+          user: 'estadisticaMerma852@hotmail.com', // generated ethereal user
+          pass: 'Galito852', // generated ethereal password
         },
       });
 
       // send mail with defined transport object
       const info = await transporter.sendMail({
-        from: '"Fred Foo 👻" <foo@example.com>', // sender address
-        to: 'neyoni5264@richdn.com', // list of receivers
+        from: '"Fred Foo 👻" <estadisticaMerma852@hotmail.com>', // sender address
+        to: 'jonathankenny852@gmail.com', // list of receivers
         subject: 'Hello ✔', // Subject line
         text: 'Hello world?', // plain text body
         html: '<b>Prueba de texto?</b>', // html body

@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { Merma } from 'src/merma/entities/merma.entity';
 import { PesoMano } from 'src/perfiles/peso-mano/entities/peso-mano.entity';
 import { PesoManoService } from 'src/perfiles/peso-mano/peso-mano.service';
-import { Connection, Repository } from 'typeorm';
+import { Between, Connection, Repository } from 'typeorm';
 import { CreatePerfilRacimoDto } from './dto/create-perfil-racimo.dto';
 import { UpdatePerfilRacimoDto } from './dto/update-perfil-racimo.dto';
 import { PerfilRacimo } from './entities/perfil-racimo.entity';
@@ -112,6 +112,27 @@ export class PerfilRacimosService {
     });
     console.log(count);
     return count;
+  }
+
+  async findByRanchPerfiles(ranch: number, week: number) {
+    const weekFind = moment().isoWeek(week).format('YYYY-MM-DD');
+    const weekEnd = moment().isoWeek(week).add(6, 'days').format('YYYY-MM-DD');
+    const perfiles = await this.perfilRacimoRepository.find({
+      where: {
+        merma: {
+          ranch: ranch,
+          fecha: Between(weekFind, weekEnd),
+        },
+      },
+      relations: [
+        'merma',
+        'numeroDedos',
+        'longitudDedos',
+        'calibraciones',
+        'pesoMano',
+      ],
+    });
+    return perfiles;
   }
 
   findAll() {
