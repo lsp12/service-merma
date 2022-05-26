@@ -2,7 +2,14 @@ import { Get, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
 import { Sku } from 'src/sku/entities/sku.entity';
-import { Between, Connection, MoreThan, Not, Repository } from 'typeorm';
+import {
+  Between,
+  Connection,
+  IsNull,
+  MoreThan,
+  Not,
+  Repository,
+} from 'typeorm';
 import { CreateMermaDto } from './dto/create-merma.dto';
 import { UpdateMermaDto } from './dto/update-merma.dto';
 import { Merma } from './entities/merma.entity';
@@ -156,12 +163,11 @@ export class MermaService {
         'perfilRacimos.DesgloceMermas.defecto.tipoDefecto',
       ],
       order: {
-        fecha: 'ASC',
+        fecha: 'DESC',
       },
     });
 
     //mapeo de la consulta
-
     const mermaHaciendad = merma.map((merma) => {
       const {
         rCortado,
@@ -530,67 +536,84 @@ export class MermaService {
     });
 
     const compilacion: any = {};
-    const porcentaje = mermaHaciendad.map((merma) => {
-      merma.defectosMermaGeneral.forEach((x) => {
-        if (!compilacion[x.defecto]) {
-          compilacion[x.defecto] = {
-            tipoDefecto: x.tipoDefecto,
-            defecto: x.defecto,
-            dedos: x.dedos,
-            manos: x.manos,
-            racimos: x.racimos,
-            pesoRechazado: x.pesoRechazado,
-            porcentaje: x.porcentaje,
-            porcentajeMM: x.porcentajeMM,
-          };
-        } else {
-          compilacion[x.defecto].dedos += x.dedos;
-          compilacion[x.defecto].manos += x.manos;
-          compilacion[x.defecto].racimos += x.racimos;
-          compilacion[x.defecto].pesoRechazado += x.pesoRechazado;
-          compilacion[x.defecto].porcentaje += x.porcentaje;
-          compilacion[x.defecto].porcentajeMM += x.porcentajeMM;
-        }
+    if (mermaHaciendad.length > 0) {
+      const porcentaje = mermaHaciendad.map((merma) => {
+        merma.defectosMermaGeneral.forEach((x) => {
+          if (!compilacion[x.defecto]) {
+            compilacion[x.defecto] = {
+              tipoDefecto: x.tipoDefecto,
+              defecto: x.defecto,
+              dedos: x.dedos,
+              manos: x.manos,
+              racimos: x.racimos,
+              pesoRechazado: x.pesoRechazado,
+              porcentaje: x.porcentaje,
+              porcentajeMM: x.porcentajeMM,
+            };
+          } else {
+            compilacion[x.defecto].dedos += x.dedos;
+            compilacion[x.defecto].manos += x.manos;
+            compilacion[x.defecto].racimos += x.racimos;
+            compilacion[x.defecto].pesoRechazado += x.pesoRechazado;
+            compilacion[x.defecto].porcentaje += x.porcentaje;
+            compilacion[x.defecto].porcentajeMM += x.porcentajeMM;
+          }
+        });
+        return {
+          porcentajeContado: merma.porcentajeContado,
+          porcentajeProcesado: merma.porcentajeProcesado,
+        };
       });
-      return {
-        porcentajeContado: merma.porcentajeContado,
-        porcentajeProcesado: merma.porcentajeProcesado,
+
+      const promedio = porcentaje.reduce((a, b) => {
+        return {
+          porcentajeContado: a.porcentajeContado + b.porcentajeContado,
+          porcentajeProcesado: a.porcentajeProcesado + b.porcentajeProcesado,
+        };
+      });
+
+      const promedioFinal = {
+        porcentajeContado: promedio.porcentajeContado / mermaHaciendad.length,
+        porcentajeProcesado:
+          promedio.porcentajeProcesado / mermaHaciendad.length,
       };
-    });
 
-    const promedio = porcentaje.reduce((a, b) => {
+      const stadistics = Object.values<any>(compilacion);
+      const promedioStadistics = stadistics.map((x) => {
+        return {
+          defecto: x.defecto,
+          tipoDefecto: x.tipoDefecto,
+          dedos: x.dedos / mermaHaciendad.length,
+          manos: x.manos / mermaHaciendad.length,
+          racimos: x.racimos / mermaHaciendad.length,
+          pesoRechazado: x.pesoRechazado / mermaHaciendad.length,
+          porcentaje: x.porcentaje / mermaHaciendad.length,
+          porcentajeMM: x.porcentajeMM / mermaHaciendad.length,
+        };
+      });
+
+      const porcentajes = promedioStadistics.reduce((a, b) => {
+        return a + b.porcentajeMM;
+      }, 0);
+
+      const nameRanch = mermaHaciendad[0].ranch;
+
       return {
-        porcentajeContado: a.porcentajeContado + b.porcentajeContado,
-        porcentajeProcesado: a.porcentajeProcesado + b.porcentajeProcesado,
+        promedioStadistics,
+        promedioFinal,
+        porcentajes,
+        mermaHaciendad,
+        nameRanch,
       };
-    });
-
-    const promedioFinal = {
-      porcentajeContado: promedio.porcentajeContado / mermaHaciendad.length,
-      porcentajeProcesado: promedio.porcentajeProcesado / mermaHaciendad.length,
-    };
-
-    const stadistics = Object.values<any>(compilacion);
-    const promedioStadistics = stadistics.map((x) => {
+    } else {
       return {
-        defecto: x.defecto,
-        tipoDefecto: x.tipoDefecto,
-        dedos: x.dedos / mermaHaciendad.length,
-        manos: x.manos / mermaHaciendad.length,
-        racimos: x.racimos / mermaHaciendad.length,
-        pesoRechazado: x.pesoRechazado / mermaHaciendad.length,
-        porcentaje: x.porcentaje / mermaHaciendad.length,
-        porcentajeMM: x.porcentajeMM / mermaHaciendad.length,
+        promedioStadistics: [],
+        promedioFinal: {},
+        mermaHaciendad: [],
+        porcentajes: 0,
+        nameRanch: {},
       };
-    });
-
-    const porcentajes = promedioStadistics.reduce((a, b) => {
-      return a + b.porcentajeMM;
-    }, 0);
-
-    console.log(promedioStadistics, promedioFinal, porcentajes);
-
-    return mermaHaciendad;
+    }
   }
 
   async findByDate(date: string) {
