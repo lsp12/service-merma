@@ -53,11 +53,13 @@ export class MermaController {
 
   @Get('/findByDate/:fecha')
   findByDate(@Param('fecha') fecha: string) {
+    console.log(fecha);
     return this.mermaService.findByDate(fecha);
   }
 
   @Get('/resagadas/:ranch')
   findResagadas(@Param('ranch') ranch: number) {
+    console.log(ranch);
     return this.mermaService.findResagadas(ranch);
   }
 

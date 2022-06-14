@@ -2,6 +2,7 @@ import { IsNumber, IsOptional } from 'class-validator';
 import { Caja } from 'src/cajas/entities/caja.entity';
 import { Color } from 'src/color/entities/color.entity';
 import { ColoredBunch } from 'src/colored-bunches/entities/colored-bunch.entity';
+import { DesgloceMano } from 'src/desgloce-manos/entities/desgloce-mano.entity';
 import { RejectedBunch } from 'src/rejected-bunches/entities/rejected-bunch.entity';
 import { Sku } from 'src/sku/entities/sku.entity';
 
@@ -83,6 +84,9 @@ export class CreateMermaDto {
 
   @IsOptional()
   resagados: any;
+
+  @IsOptional()
+  DesgloceManos: DesgloceMano[];
 }
 
 export interface ICajas {

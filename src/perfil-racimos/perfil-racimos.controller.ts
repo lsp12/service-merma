@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  Res,
+  Response,
 } from '@nestjs/common';
 import { PerfilRacimosService } from './perfil-racimos.service';
 import { CreatePerfilRacimoDto } from './dto/create-perfil-racimo.dto';
@@ -29,9 +31,13 @@ export class PerfilRacimosController {
     );
   }
 
-  @Get()
-  findAll() {
-    return this.perfilRacimosService.findAll();
+  @Get(':ranch/:week')
+  findAll(
+    @Response({ passthrough: true }) res,
+    @Param('ranch') ranch: string,
+    @Param('week') week: string,
+  ) {
+    return this.perfilRacimosService.findAll(res, +ranch, +week);
   }
 
   @Get(':id')

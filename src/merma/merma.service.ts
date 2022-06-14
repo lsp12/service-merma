@@ -15,6 +15,8 @@ import { UpdateMermaDto } from './dto/update-merma.dto';
 import { Merma } from './entities/merma.entity';
 import { Ranch } from './entities/ranch.entity';
 import { IFindMerma } from './Interface/InterfaceMerma';
+import 'moment/locale/es';
+moment.locale('es-mx');
 
 @Injectable()
 export class MermaService {
@@ -140,32 +142,60 @@ export class MermaService {
 
   async findOne(findMermaDto: IFindMerma) {
     //consulta a la base de datos
-
-    const merma = await this.MermaRepository.find({
-      where: {
-        fecha: Between(findMermaDto.fechaInicio, findMermaDto.fechaFin),
-        ranch: findMermaDto.ranch,
-        mermaCortada: MoreThan(0),
-      },
-      relations: [
-        'coloredBunches',
-        'cajas',
-        'cajas.sku',
-        'ranch',
-        'DesgloceManos',
-        'DesgloceManos.defecto',
-        'DesgloceManos.defecto.tipoDefecto',
-        'perfilRacimos',
-        'perfilRacimos.pesoMano',
-        'perfilRacimos.numeroDedos',
-        'perfilRacimos.DesgloceMermas',
-        'perfilRacimos.DesgloceMermas.defecto',
-        'perfilRacimos.DesgloceMermas.defecto.tipoDefecto',
-      ],
-      order: {
-        fecha: 'DESC',
-      },
-    });
+    const merma =
+      findMermaDto.zona == null
+        ? await this.MermaRepository.find({
+            where: {
+              fecha: Between(findMermaDto.fechaInicio, findMermaDto.fechaFin),
+              ranch: findMermaDto.ranch,
+              mermaCortada: MoreThan(0),
+            },
+            relations: [
+              'coloredBunches',
+              'cajas',
+              'cajas.sku',
+              'ranch',
+              'DesgloceManos',
+              'DesgloceManos.defecto',
+              'DesgloceManos.defecto.tipoDefecto',
+              'perfilRacimos',
+              'perfilRacimos.pesoMano',
+              'perfilRacimos.numeroDedos',
+              'perfilRacimos.DesgloceMermas',
+              'perfilRacimos.DesgloceMermas.defecto',
+              'perfilRacimos.DesgloceMermas.defecto.tipoDefecto',
+            ],
+            order: {
+              fecha: 'DESC',
+            },
+          })
+        : await this.MermaRepository.find({
+            where: {
+              fecha: Between(findMermaDto.fechaInicio, findMermaDto.fechaFin),
+              ranch: {
+                zona: findMermaDto.zona,
+              },
+              mermaCortada: MoreThan(0),
+            },
+            relations: [
+              'coloredBunches',
+              'cajas',
+              'cajas.sku',
+              'ranch',
+              'DesgloceManos',
+              'DesgloceManos.defecto',
+              'DesgloceManos.defecto.tipoDefecto',
+              'perfilRacimos',
+              'perfilRacimos.pesoMano',
+              'perfilRacimos.numeroDedos',
+              'perfilRacimos.DesgloceMermas',
+              'perfilRacimos.DesgloceMermas.defecto',
+              'perfilRacimos.DesgloceMermas.defecto.tipoDefecto',
+            ],
+            order: {
+              fecha: 'DESC',
+            },
+          });
 
     //mapeo de la consulta
     const mermaHaciendad = merma.map((merma) => {
@@ -633,6 +663,9 @@ export class MermaService {
         ranch: ranch,
       },
       relations: ['ranch'],
+      order: {
+        fecha: 'DESC',
+      },
     });
     return merma;
   }
@@ -654,7 +687,7 @@ export class MermaService {
         mermaCortada: 0,
       },
       order: {
-        fecha: 'ASC',
+        fecha: 'DESC',
       },
       relations: ['ranch'],
     });
@@ -713,7 +746,6 @@ export class MermaService {
         mermaCortada,
         pesoFruta,
         rRechazados,
-        totalCajas,
       } = merma;
 
       //calculo de porcentajes

@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import * as fs from 'fs';
+import { Injectable, StreamableFile } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
 import { Merma } from 'src/merma/entities/merma.entity';
@@ -8,6 +9,9 @@ import { Between, Connection, Repository } from 'typeorm';
 import { CreatePerfilRacimoDto } from './dto/create-perfil-racimo.dto';
 import { UpdatePerfilRacimoDto } from './dto/update-perfil-racimo.dto';
 import { PerfilRacimo } from './entities/perfil-racimo.entity';
+import { join } from 'path';
+import 'moment/locale/es';
+moment.locale('es-mx');
 
 @Injectable()
 export class PerfilRacimosService {
@@ -135,12 +139,115 @@ export class PerfilRacimosService {
     return perfiles;
   }
 
-  findAll() {
-    return `This action returns all perfilRacimos`;
+  async findAll(res: any, ranch: number, week: number) {
+    const weekEnd = moment().isoWeek(week).add(5, 'days').format('YYYY-MM-DD');
+    const weekStart = moment()
+      .isoWeek(week)
+      .subtract(1, 'days')
+      .format('YYYY-MM-DD');
+
+    console.log(weekStart, weekEnd);
+
+    const perfilRacimos = await this.perfilRacimoRepository.find({
+      order: {
+        id: 'DESC',
+      },
+      where: {
+        merma: {
+          fecha: Between(weekStart, weekEnd),
+          /* ranch: {
+            zona: ranch,
+          }, */
+        },
+      },
+      relations: [
+        'merma',
+        'merma.ranch',
+        'merma.ranch.zona',
+        'pesoMano',
+        'numeroDedos',
+        'longitudDedos',
+        'calibraciones',
+      ],
+    });
+
+    const orderBynumMano = perfilRacimos.map((perfilRacimo) => {
+      return {
+        fecha:
+          typeof perfilRacimo.merma !== 'number' && perfilRacimo.merma.fecha,
+        lote: perfilRacimo.lote,
+        ranch:
+          typeof perfilRacimo.merma !== 'number' &&
+          typeof perfilRacimo.merma.ranch !== 'number' &&
+          perfilRacimo.merma.ranch.nombre,
+        zona: (perfilRacimo as any).merma.ranch.zona.nombre,
+        pesoMano: perfilRacimo.pesoMano
+          .sort((a, b) => {
+            return a.numMano - b.numMano;
+          })
+          .map((pesoMano) => {
+            return {
+              peso: pesoMano.pesoMano,
+            };
+          }),
+        numeroDedos: perfilRacimo.numeroDedos
+          .sort((a, b) => {
+            return a.numMano - b.numMano;
+          })
+          .map((numeroDedos) => {
+            return {
+              numDedos: numeroDedos.numDedos,
+            };
+          }),
+        longitudDedos: perfilRacimo.longitudDedos
+          .sort((a, b) => {
+            return a.numMano - b.numMano;
+          })
+          .map((longitudDedos) => {
+            return {
+              longitud: longitudDedos.longitudDedos,
+            };
+          }),
+        calibraciones: perfilRacimo.calibraciones
+          .sort((a, b) => {
+            return a.numMano - b.numMano;
+          })
+          .map((calibraciones) => {
+            return {
+              calibracion: calibraciones.calibracion,
+            };
+          }),
+      };
+    });
+
+    fs.writeFileSync(
+      './src/perfilRacimos.json',
+      JSON.stringify(orderBynumMano),
+    );
+
+    //limpiar memoria ram
+    perfilRacimos.length = 0;
+    orderBynumMano.length = 0;
+
+    const file = fs.createReadStream(
+      join(process.cwd(), './src/perfilRacimos.json'),
+    );
+    res.set({
+      'Content-Type': 'application/json',
+      'Content-Disposition':
+        'attachment; filename="zona ' +
+        ranch +
+        ' perfiles semana ' +
+        week +
+        '.json"',
+    });
+
+    return new StreamableFile(file);
+    /* return orderBynumMano;*/
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} perfilRacimo`;
+    return `This action returns aa #${id} perfilRacimo`;
   }
 
   update(id: number, updatePerfilRacimoDto: UpdatePerfilRacimoDto) {
