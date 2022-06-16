@@ -32,6 +32,9 @@ export class PerfilRacimo {
   @Column({ default: false })
   defectosY: boolean;
 
+  @Column()
+  edad: number;
+
   @ManyToOne(() => Color, (Color) => Color.perfilRacimo, {
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',

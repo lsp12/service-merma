@@ -11,6 +11,7 @@ import { UpdatePerfilRacimoDto } from './dto/update-perfil-racimo.dto';
 import { PerfilRacimo } from './entities/perfil-racimo.entity';
 import { join } from 'path';
 import 'moment/locale/es';
+import { Color } from 'src/color/entities/color.entity';
 moment.locale('es-mx');
 
 @Injectable()
@@ -176,6 +177,7 @@ export class PerfilRacimosService {
         fecha:
           typeof perfilRacimo.merma !== 'number' && perfilRacimo.merma.fecha,
         lote: perfilRacimo.lote,
+        edad: perfilRacimo.edad,
         ranch:
           typeof perfilRacimo.merma !== 'number' &&
           typeof perfilRacimo.merma.ranch !== 'number' &&

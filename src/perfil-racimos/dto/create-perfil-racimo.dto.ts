@@ -21,6 +21,9 @@ export class CreatePerfilRacimoDto {
   ranch: Ranch;
 
   @IsOptional()
+  edad: number;
+
+  @IsOptional()
   @Validate(Calibracion)
   calibraciones: Calibracion[];
 

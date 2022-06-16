@@ -136,6 +136,7 @@ export class MermaService {
     const mermas = await this.MermaRepository.find({
       where: { ranch, mermaCortada: 0 },
       relations: ['ranch'],
+      order: { fecha: 'DESC' },
     });
     return mermas;
   }
@@ -690,6 +691,8 @@ export class MermaService {
         fecha: 'DESC',
       },
       relations: ['ranch'],
+      skip: 0,
+      take: 50,
     });
 
     return { followUp, resagadas };
