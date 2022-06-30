@@ -63,9 +63,9 @@ export class MermaController {
     return this.mermaService.findResagadas(ranch);
   }
 
-  @Get('/followByMerma')
-  followByMerma() {
-    return this.mermaService.followByMerma();
+  @Get('/followByMerma/:fecha')
+  followByMerma(@Param('fecha') fecha: string) {
+    return this.mermaService.followByMerma(fecha);
   }
 
   @Get('/history/:id')

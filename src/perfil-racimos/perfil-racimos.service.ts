@@ -12,7 +12,7 @@ import { PerfilRacimo } from './entities/perfil-racimo.entity';
 import { join } from 'path';
 import 'moment/locale/es';
 import { Color } from 'src/color/entities/color.entity';
-moment.locale('es-mx');
+/* moment.locale('es-mx'); */
 
 @Injectable()
 export class PerfilRacimosService {
@@ -141,14 +141,15 @@ export class PerfilRacimosService {
   }
 
   async findAll(res: any, ranch: number, week: number) {
-    const weekEnd = moment().isoWeek(week).add(5, 'days').format('YYYY-MM-DD');
+    const weekEnd = moment().isoWeek(week).add(3, 'days').format('YYYY-MM-DD');
     const weekStart = moment()
       .isoWeek(week)
-      .subtract(1, 'days')
+      .subtract(3, 'days')
       .format('YYYY-MM-DD');
 
-    console.log(weekStart, weekEnd);
+    console.log(week);
 
+    console.log(weekStart, weekEnd);
     const perfilRacimos = await this.perfilRacimoRepository.find({
       order: {
         id: 'DESC',
@@ -156,9 +157,9 @@ export class PerfilRacimosService {
       where: {
         merma: {
           fecha: Between(weekStart, weekEnd),
-          /* ranch: {
+          ranch: {
             zona: ranch,
-          }, */
+          },
         },
       },
       relations: [
@@ -177,12 +178,12 @@ export class PerfilRacimosService {
         fecha:
           typeof perfilRacimo.merma !== 'number' && perfilRacimo.merma.fecha,
         lote: perfilRacimo.lote,
-        edad: perfilRacimo.edad,
         ranch:
           typeof perfilRacimo.merma !== 'number' &&
           typeof perfilRacimo.merma.ranch !== 'number' &&
           perfilRacimo.merma.ranch.nombre,
         zona: (perfilRacimo as any).merma.ranch.zona.nombre,
+        edad: perfilRacimo.edad,
         pesoMano: perfilRacimo.pesoMano
           .sort((a, b) => {
             return a.numMano - b.numMano;

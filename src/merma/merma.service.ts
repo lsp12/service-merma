@@ -671,11 +671,11 @@ export class MermaService {
     return merma;
   }
 
-  async followByMerma() {
-    const now = moment().format('YYYY-MM-DD');
+  async followByMerma(fecha: string) {
+    /* const now = moment().format('YYYY-MM-DD'); */
     const followUp = await this.MermaRepository.find({
       where: {
-        fecha: now,
+        fecha: fecha,
       },
       relations: ['ranch', 'ranch.zona', 'perfilRacimos'],
       order: {

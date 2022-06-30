@@ -58,6 +58,7 @@ export class PerfilRacimosController {
     @Param('ranch') ranch: string,
     @Param('week') week: string,
   ) {
+    console.log('1');
     return this.perfilRacimosService.findByRanchPerfiles(+ranch, +week);
   }
 

@@ -63,7 +63,7 @@ export class ColorService {
     let newColor = [];
     do {
       newColor = newColor.concat(color);
-    } while (newColor.length + 1 <= 53);
+    } while (newColor.length + 1 < 54);
     const colorByWeek = [13, 12, 11, 10, 9].map((range) => {
       const newDate = Number(
         moment(date)
