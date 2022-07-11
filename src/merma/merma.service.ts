@@ -532,6 +532,7 @@ export class MermaService {
         manosMerma: Object.values<any>(manosObject),
         totalPesoManos: Number(totalPesoManos.toFixed(2)),
         totalPesoManosRacimos: Math.round(totalPesoManos / pesoFruta),
+        cantidadPerfiles: merma.perfilRacimos.length,
         cantidadUltManos,
         cantidadPriManos,
         pesoRacimosAprobechados: rCortado - mermaCortada,
